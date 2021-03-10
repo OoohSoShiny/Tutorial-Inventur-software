@@ -36,7 +36,69 @@ namespace Inventory_manager
         public int AddWares_WindowHeight
         { get { return addWareWindowSizeHeight; } }
 
+        //Window size in the "Incoming Wares" Tab
 
+        private int waresIncWindowSizeWidth = 365; private int waresIncWindowSizeHeight = 220;
+
+        public int WaresInc_WindowWidth
+        { get { return waresIncWindowSizeWidth; } }
+        public int WaresInc_WindowHeight
+        { get { return waresIncWindowSizeHeight; } }
+
+        //Places of the ComboBoxes in the "Incoming Wares" Tab
+
+        private Point waresIncComboOne = new Point(12, 29);
+        private Point waresIncComboTwo = new Point(12, 56);
+        private Point waresIncComboThree = new Point(12, 83);
+        private Point waresIncComboFour = new Point(12, 110);
+        private Point waresIncComboFive = new Point(12, 137);
+
+        public Point WaresInc_ComboOne
+        { get { return waresIncComboOne; } }
+        public Point WaresInc_ComboTwo
+        { get { return waresIncComboTwo; } }
+        public Point WaresInc_ComboThree
+        { get { return waresIncComboThree; } }
+        public Point WaresInc_ComboFour
+        { get { return waresIncComboFour; } }
+        public Point WaresInc_ComboFive
+        { get { return waresIncComboFive; } }
+
+        //Places of the textboxes in the "Incoming Wares" Tab
+        private Point waresIncTextOne = new Point(139, 29);
+        private Point waresIncTextTwo = new Point(139, 56);
+        private Point waresIncTextThree = new Point(139, 83);
+        private Point waresIncTextFour = new Point(139, 110);
+        private Point waresIncTextFive = new Point(139, 137);
+
+        public Point WaresInc_TxtboxOne
+        { get { return waresIncTextOne; } }
+        public Point WaresInc_TxtboxTwo
+        { get { return waresIncTextTwo; } }
+        public Point WaresInc_TxtboxThree
+        { get { return waresIncTextThree; } }
+        public Point WaresInc_TxtboxFour
+        { get { return waresIncTextFour; } }
+        public Point WaresInc_TxtboxFive
+        { get { return waresIncTextFive; } }
+
+        //Places of the labels in the "Incoming Wares" Tab
+        private Point waresIncLabelWare = new Point(12,9);
+        private Point waresIncLabelCount = new Point(136, 9);
+
+        public Point WaresInc_LabelWare
+        { get { return waresIncLabelWare; } }
+        public Point WaresInc_LabelCount
+        { get { return waresIncLabelCount; } }
+
+        //Places of the buttons in the "Incoming Wares" Tab
+        private Point waresIncButtonCancel = new Point(255, 39);
+        private Point waresIncButtonSend = new Point(254, 134);
+
+        public Point WaresInc_ButtonCancel
+        { get { return waresIncButtonCancel; } }
+        public Point WaresInc_ButtonSend
+        { get { return waresIncButtonSend; } }
 
 
         //Place of the buttons in the MAIN WINDOW
