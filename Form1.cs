@@ -18,11 +18,11 @@ namespace Inventory_manager
         MySqlConnection databaseConnection;
         MySqlCommand commandDatabase;
         MySqlDataReader myReader;
-        Label[] addWaresLabels, waresIncLabels;
-        TextBox[] addWaresTextboxes, waresIncTextboxes;
+        Label[] addWaresLabels, waresIncLabels, currentInventoryLabels;
+        TextBox[] addWaresTextboxes, waresIncTextboxes, currentInventoryTextbox;
         Button[] mainWindowButtons, currentInventoryButtons, addWaresButtons, waresIncButtons;
         Point[] mainWindowButtonPoints, currentInventoryPoints, addWaresLabelsPoints, addWaresTextboxPoints, addWareButtonPoints, waresIncComboPlaces;
-        Point[] waresIncTextboxPlaces, waresIncLabelPlaces, waresIncButtonPlaces;
+        Point[] waresIncTextboxPlaces, waresIncLabelPlaces, waresIncButtonPlaces, currentInventoryDelLabelPlaces, currentInventoryTxtBoxPlaces;
         ComboBox[] waresIncCombos;
 
         bool incomingWares = false;
@@ -34,9 +34,15 @@ namespace Inventory_manager
             //Main Window
             mainWindowButtons = new Button[] { btnInventoryCurrent, btnNewInventory, btnShipmentInc, btnShipmentOut };
             mainWindowButtonPoints = new Point[] { variables.CurrentInventory_BtnPlace, variables.NewInvetory_BtnPlace, variables.ShipmentInc_BtnPlace, variables.ShipmentOut_BtnPlace };
+            
             //Current Inventory Window
             currentInventoryButtons = new Button[] { btnCurrentInventoryBack, btnCurrentInventoryAdd, btnCurrentInventoryDel };
             currentInventoryPoints = new Point[] { variables.CurrentInventory_BackBtnPlace, variables.CurrentInventory_AddBtnPlace, variables.CurrentInventory_DelBtnPlace };
+            currentInventoryLabels = new Label[] { lblCurrentInventoryDelete };
+            currentInventoryDelLabelPlaces = new Point[] { variables.CurrentWares_DelLabelPlace };
+            currentInventoryTextbox = new TextBox[] { txtCurrentInventoryDelete };
+            currentInventoryTxtBoxPlaces = new Point[] { variables.CurrentWares_TxtBoxPlace };
+
             //Add Wares Window
             addWaresLabels = new Label[] { lblAddWareText, lblAddWareTextName, lblAddWareTextPrice, lblAddWareTextCount, lblAddWareTextUnit };
             addWaresLabelsPoints = new Point[] { variables.AddWareMainLabelPoint, variables.AddWareLabelNamePoint, variables.AddWareLabelPricePoint, variables.AddWareLabelCountPoint, variables.AddWareLabelUnitPoint };
@@ -44,6 +50,7 @@ namespace Inventory_manager
             addWaresTextboxes = new TextBox[] { txtAddWareName, txtAddWarePrice, txtAddWareCount, txtAddWareUnit };
             addWaresButtons = new Button[] { btnAddWareAdd, btnAddWareCancel };
             addWareButtonPoints = new Point[] { variables.AddWareAddButtonPoint, variables.AddWareCancelButtonPoint };
+            
             //Wares Inc Window
             waresIncCombos = new ComboBox[] { dropDownWareInc01, dropDownWareInc02, dropDownWareInc03, dropDownWareInc04, dropDownWareInc05 };
             waresIncComboPlaces = new Point[] { variables.WaresInc_ComboOne, variables.WaresInc_ComboTwo, variables.WaresInc_ComboThree, variables.WaresInc_ComboFour, variables.WaresInc_ComboFive };
@@ -53,9 +60,7 @@ namespace Inventory_manager
             waresIncLabelPlaces = new Point[] { variables.WaresInc_LabelWare, variables.WaresInc_LabelCount };
             waresIncButtons = new Button[] { btnIncBack, btnIncSend };
             waresIncButtonPlaces = new Point[] { variables.WaresInc_ButtonCancel, variables.WaresInc_ButtonSend };
-
-
-
+            
             //Initial placement of buttons and size of window
             Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);
             Place_New_Buttons(mainWindowButtons, mainWindowButtonPoints);
@@ -119,6 +124,8 @@ namespace Inventory_manager
             Resize_Mainframe(variables.Window_DataGrid_Width, variables.Window_DataGrid_Height);
             Place_Datagrid(dataGridWares);
             Place_New_Buttons(currentInventoryButtons, currentInventoryPoints);
+            Place_New_Labels(currentInventoryLabels, currentInventoryDelLabelPlaces);
+            Place_New_Textboxes(currentInventoryTextbox, currentInventoryTxtBoxPlaces);
             this.Text = "Derzeitiges Inventar";
         }
 
@@ -130,6 +137,8 @@ namespace Inventory_manager
             Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);
             Remove_Datagrid(dataGridWares);
             Place_New_Buttons(mainWindowButtons, mainWindowButtonPoints);
+            Clear_Labels(currentInventoryLabels);
+            Clear_All_Textboxes(currentInventoryTextbox);
             this.Text = "Inventur";
         }
 
@@ -147,7 +156,34 @@ namespace Inventory_manager
 
         private void btnCurrentInventoryDel_Click(object sender, EventArgs e)
         {
-
+            //Check if something is written in the index box, and parses it
+            bool deleteParseBool = false;
+            double deleteIndex = -1;
+            if(txtCurrentInventoryDelete.Text != "")
+            {
+                deleteParseBool = double.TryParse(txtCurrentInventoryDelete.Text, out deleteIndex);
+            }
+            //Error if one of the previous steps didnt work, or a decimal was entered
+            if(!deleteParseBool)
+            { MessageBox.Show("Bitte einen gültigen Index eingeben.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            
+            else//What happens when valid input was entered
+            {
+                try //forms a query with the given index and deletes that row
+                {
+                    Database_Connection_Open();
+                    string query = "DELETE FROM wares WHERE ID=" + deleteIndex.ToString() + ";";
+                    commandDatabase = new MySqlCommand(query, databaseConnection);
+                    myReader = commandDatabase.ExecuteReader();
+                    MessageBox.Show("Löschung Erfolgreich", "Erfolg");
+                    Database_Connection_Close();
+                    myReader.Close();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
 
         private void btnIncBack_Click(object sender, EventArgs e)
@@ -212,16 +248,14 @@ namespace Inventory_manager
                                 query = "UPDATE wares SET Count='" + addValue.ToString() + "'WHERE ID ="+idString+";";
                                 commandDatabase = new MySqlCommand(query, databaseConnection);
                                 myReader = commandDatabase.ExecuteReader();
-
-                                //Final message to say that we are through
-                                if(i == 4)
-                                    MessageBox.Show("Waren wurden erfolgreich aktualisiert");
                             }
                         }
                     }
                     //Clears text of the textbox
                     waresIncTextboxes[i].Text = "";
                 }
+                //Final message to say that we are through
+                MessageBox.Show("Waren wurden erfolgreich aktualisiert");
             }
             catch (Exception ex)
                 { MessageBox.Show(ex.Message); }
