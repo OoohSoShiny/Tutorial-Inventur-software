@@ -37,13 +37,28 @@ namespace Inventory_manager
         { get { return addWareWindowSizeHeight; } }
 
         //Window size in the "Incoming Wares" Tab
-
         private int waresIncWindowSizeWidth = 365; private int waresIncWindowSizeHeight = 220;
 
         public int WaresInc_WindowWidth
         { get { return waresIncWindowSizeWidth; } }
         public int WaresInc_WindowHeight
         { get { return waresIncWindowSizeHeight; } }
+
+        //Window size in the "New inventory" Tab
+        int newInvenWindowSizeWidth = 367; int newInvenWindowSizeHeight = 310;
+
+        public int NewInven_WindowWidth
+        { get { return newInvenWindowSizeWidth; } }
+        public int NewInven_WindowHeight
+        { get { return newInvenWindowSizeHeight; } }
+
+        //Window size in the "Counting" Tab
+        int newCountWindowWidth = 357; int newCountWindowHeight = 322;
+        public int NewCount_WindowWidth
+        { get { return newCountWindowWidth; } }
+        public int NewCount_WindowHeight
+        { get { return newCountWindowHeight; } }
+
 
         //Places of the ComboBoxes in the "Incoming Wares" Tab
 
@@ -129,6 +144,15 @@ namespace Inventory_manager
         public Point DataGrid_Point
         { get { return dataGridPoint; } }
 
+        //Places of the textbox and the label
+        private Point currentWaresDelLabel = new Point(254, 44);
+        private Point currentWaresDelTextbox = new Point(402, 41);
+
+        public Point CurrentWares_DelLabelPlace
+        { get { return currentWaresDelLabel; } }
+        public Point CurrentWares_TxtBoxPlace
+        { get { return currentWaresDelTextbox; } }
+
         //Places of the buttons in the CURRENT INVENTORY Tab
 
         private Point currentInventoryBtnBack = new Point(13, 13);
@@ -183,24 +207,91 @@ namespace Inventory_manager
         public Point AddWareCancelButtonPoint
         { get { return addWareCancelButtonPoint; } }
 
-        //Strings for Adding new wares into the database
-        private string userInputName = "";
-        private string userInputPrice = "";
-        private string userInputCount = "";
-        private string userInputUnit = "";
+        //Places of labels in the NEW INVENTORY tab
+        Point newInvenLabelReason = new Point(13, 20);
+        Point newInvenLabelDate = new Point(13, 58);
+        Point newInvenLabelLeader = new Point(13, 100);
+        Point newInvenLabelAccount = new Point(13, 135);
 
-        private float userInputPriceParsed;
+        public Point NewInven_LabelReasonPlace
+        { get { return newInvenLabelReason; } }
+        public Point NewInven_LabelDatePlace
+        { get { return newInvenLabelDate; } }
+        public Point NewInven_LabelLeaderPlace
+        { get { return newInvenLabelLeader; } }
+        public Point NewInven_LabelAccountPlace
+        { get { return newInvenLabelAccount; } }
 
-        public float UserInput_PriceParsed
-        { get { return userInputPriceParsed; } set { userInputPriceParsed = value; } }
-        public string UserInput_WaresName
-        { get { return userInputName; } set { userInputName = value; } }
-        public string UserInput_WaresPrice
-        { get { return userInputPrice; } set { userInputPrice = value; } }
-        public string UserInput_WaresCount
-        { get { return userInputCount; } set { userInputCount = value; } }
-        public string UserInput_WaresUnit
-        { get { return userInputUnit; } set { userInputUnit = value; } }
+        //place of the buttons in the NEW INVENTORY tab
+        Point newInvenBtnNew = new Point(16, 174);
+        Point newInvenBtnCancel = new Point(64, 236);
+        public Point NewInven_ButtonNewPlace
+        { get { return newInvenBtnNew; } }
+        public Point NewInven_ButtonCancel
+        { get { return newInvenBtnCancel; } }
 
+
+
+        //Place of radio buttons in the NEW INVENTORY tab
+
+        Point newInvenRadioYes = new Point(87, 133);
+        Point NewInvenRadioNo = new Point(129, 133);
+
+        public Point NewInven_RadioYesPlace
+        { get { return newInvenRadioYes; } }
+        public Point NewInven_RadioNoPlace
+        { get { return NewInvenRadioNo; } }
+
+        //places of the textboxes in the NEW INVENTORY tab
+
+        Point newInventxtDate = new Point(87, 55);
+        Point newInventxtLeader = new Point(87, 97);
+        Point newInventxtAccount = new Point(182 , 132);
+
+        public Point NewInven_TxtDatePlace
+        { get { return newInventxtDate; } }
+        public Point NewInven_TxtLeaderPlace
+        { get { return newInventxtLeader; } }
+        public Point NewInven_TxtAccountPlace
+        { get { return newInventxtAccount; } }
+
+        //Place of the combobox in the NEW INVENTORY tab
+        Point newInvenComboReason = new Point(87, 17);
+        public Point NewInven_ComboReasonPlace
+        { get { return newInvenComboReason; } }
+
+        //Place of the labels in the COUNTING tab
+        Point newCountWareFixed = new Point(13, 13);
+        Point newCountWareCurrent = new Point(78, 13);
+        Point newCountCountFixed = new Point(13, 57);
+        Point newCountCountUpdating = new Point(146, 57);
+
+        public Point NewCount_LabelWareFixedPlace
+        { get { return newCountWareFixed; } }
+        public Point NewCount_LabelWareCurrentPlace
+        { get { return newCountWareCurrent; } }
+        public Point NewCount_LabelCountFixedPlace
+        { get { return newCountCountFixed; } }
+        public Point NewCount_LabelCountCurrentPlace
+        { get { return newCountCountUpdating; } }
+        
+        
+        //Place of the buttons in the COUNTING tab
+        Point newCountPlusOne = new Point(12, 135);
+        Point newCountPlusFive = new Point(93, 135);
+        Point newCountPluseTen = new Point(174, 135);
+        Point newCountPlusFifty = new Point(255, 135);
+        Point newCountSend = new Point(93, 248);
+
+        public Point NewCount_PlusOnePlace
+        { get { return newCountPlusOne; } }
+        public Point NewCount_PluseFivePlace
+        { get { return newCountPlusFive; } }
+        public Point NewCount_PlusTenPlace
+        { get { return newCountPluseTen; } }
+        public Point NewCount_PlusFiftyPlace
+        { get { return newCountPlusFifty; } }
+        public Point NewCount_SendButtonPlace
+        { get { return newCountSend; } }
     }
 }
