@@ -866,12 +866,14 @@ namespace Inventory_manager
             // 
             // btnLastInventoryBack
             // 
+            this.btnLastInventoryBack.Enabled = false;
             this.btnLastInventoryBack.Location = new System.Drawing.Point(15, 142);
             this.btnLastInventoryBack.Name = "btnLastInventoryBack";
             this.btnLastInventoryBack.Size = new System.Drawing.Size(214, 23);
             this.btnLastInventoryBack.TabIndex = 71;
             this.btnLastInventoryBack.Text = "Zurück";
             this.btnLastInventoryBack.UseVisualStyleBackColor = true;
+            this.btnLastInventoryBack.Visible = false;
             // 
             // MainFrame
             // 
