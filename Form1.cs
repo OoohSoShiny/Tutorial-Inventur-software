@@ -14,7 +14,7 @@ namespace Inventory_manager
 {
     public partial class MainFrame : Form
     {
-        //Starting initliazing of necessary classes, arrays etc.
+        //Start initliazing necessary classes, arrays etc.
         DataSet data;
         Variables variables;
         MySqlConnection databaseConnection;
@@ -34,7 +34,8 @@ namespace Inventory_manager
         Point[] newCountButtonPlace, newCountLabelPlaces;
 
         public MainFrame()
-        {               
+        {
+            this.CenterToScreen();
             InitializeComponent();
             variables = new Variables();
             Database_Connection_Open();
@@ -55,8 +56,8 @@ namespace Inventory_manager
             }
             
             //Main Window
-            mainWindowButtons = new Button[] { btnInventoryCurrent, btnNewInventory, btnShipmentInc, btnShipmentOut };
-            mainWindowButtonPoints = new Point[] { variables.CurrentInventory_BtnPlace, variables.NewInvetory_BtnPlace, variables.ShipmentInc_BtnPlace, variables.ShipmentOut_BtnPlace };
+            mainWindowButtons = new Button[] { btnInventoryCurrent, btnNewInventory, btnShipmentInc, btnShipmentOut,btnInventoryLast, btnMainCloseProgram };
+            mainWindowButtonPoints = new Point[] { variables.CurrentInventory_BtnPlace, variables.NewInvetory_BtnPlace, variables.ShipmentInc_BtnPlace, variables.ShipmentOut_BtnPlace, variables.LastInventory_ButtonPlace, variables.CloseProgram_ButtonPlace };
             
             //Current Inventory Window
             currentInventoryButtons = new Button[] { btnCurrentInventoryBack, btnCurrentInventoryAdd, btnCurrentInventoryDel };
@@ -115,8 +116,7 @@ namespace Inventory_manager
             Database_Connection_Close();
         }
 
-        #region Buttons
-        
+        #region Buttons        
         //Main Window buttons
         private void btnNewInventory_Click(object sender, EventArgs e)
         {
@@ -131,6 +131,7 @@ namespace Inventory_manager
             Place_Comboboxes(newInvenCombos, newInvenComboPlaces);
             Place_RadioButtons(newInvenRadios, newInvenRadioPlaces);
         }
+
         //Moves to the tab for incoming shipments
         private void btnShipmentInc_Click(object sender, EventArgs e)
         {
@@ -350,7 +351,28 @@ namespace Inventory_manager
             Place_New_Textboxes(waresIncTextboxes, waresIncTextboxPlaces);
         }
 
-        //"Deletes" Mainwindow, places Current-Inventory Window
+        private void btnInventoryLast_Click(object sender, EventArgs e)
+        {
+            if (File.Exists("LastStockTaking.txt"))
+            {
+                using (StreamReader sr = new StreamReader("LastStockTaking.txt"))
+                {
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("LastStockTaking.txt fehlt.", "Fehlende Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void btnMainCloseProgram_Click(object sender, EventArgs e)
+        {
+            myReader.Close();
+            Database_Connection_Close();
+            Environment.Exit(0);
+        }
+
+        //places Current-Inventory Window
         private void btnInventoryCurrent_Click(object sender, EventArgs e)
         {
             Clear_Buttons(mainWindowButtons);
@@ -406,18 +428,32 @@ namespace Inventory_manager
                 try //forms a query with the given index and deletes that row
                 {
                     Database_Connection_Open();
-                    string query = "DELETE FROM wares WHERE ID=" + deleteIndex.ToString() + ";";
+                    string query = "SELECT `ID` FROM `wares` WHERE `ID` =" + deleteIndex;
                     commandDatabase = new MySqlCommand(query, databaseConnection);
                     myReader = commandDatabase.ExecuteReader();
-                    MessageBox.Show("Löschung Erfolgreich", "Erfolg");
-                    Database_Connection_Close();
-                    myReader.Close();
+
+                    if (myReader.HasRows)
+                    {
+                        myReader.Close();
+                        query = "DELETE FROM wares WHERE ID=" + deleteIndex.ToString() + ";";
+                        commandDatabase = new MySqlCommand(query, databaseConnection);
+                        myReader = commandDatabase.ExecuteReader();
+                        MessageBox.Show("Löschung Erfolgreich", "Erfolg");
+                        Database_Connection_Close();
+                        myReader.Close();
+                    }
+                    else
+                    {
+                        myReader.Close();
+                        MessageBox.Show("Keine Ware am angegebenen Index gefunden", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
             }
+            Fill_DataTable();
         }
 
         //Returns from incoming wares to main menu
@@ -455,6 +491,7 @@ namespace Inventory_manager
                         //What happens When valid user input was given
                         else
                         {   //build a query to get count/id from the wares in question
+                            myReader.Close();
                             string query = "SELECT `Count`,`ID` FROM `wares` WHERE `Name`=\"" + waresIncCombos[i].Text + "\";";
                             commandDatabase = new MySqlCommand(query, databaseConnection);
                             myReader = commandDatabase.ExecuteReader();
@@ -553,16 +590,12 @@ namespace Inventory_manager
                         text.Text = "";
                     }
                     Database_Connection_Open();
-                    try
-                    {
-                        string query = "INSERT INTO wares(`Name`, `Price`, `Count`, `MeasureUnit`, `ID`) VALUES('" + name + "', '" + price + "', '" + count + "', '" + unit + "', NULL)";
-                        commandDatabase = new MySqlCommand(query, databaseConnection);
-                        myReader = commandDatabase.ExecuteReader();
-                        MessageBox.Show("Erfolgreich eingefügt.", "Erfolg", MessageBoxButtons.OK);
-                        Fill_DataTable();
-                    }
-                    catch (Exception ex)
-                    { MessageBox.Show(ex.Message); }
+
+                    string query = "INSERT INTO wares(`Name`, `Price`, `Count`, `MeasureUnit`, `ID`) VALUES('" + name + "', '" + price + "', '" + count + "', '" + unit + "', NULL)";
+                    commandDatabase = new MySqlCommand(query, databaseConnection);
+                    myReader = commandDatabase.ExecuteReader();
+                    MessageBox.Show("Erfolgreich eingefügt.", "Erfolg", MessageBoxButtons.OK);
+                    Fill_DataTable();
                 }
                 Database_Connection_Close();
                 myReader.Close();
@@ -591,7 +624,7 @@ namespace Inventory_manager
             }
         }
 
-        //Calling the method necessary for filling the data grid
+        //Calling the method necessary for filling the data grid at loadup
         private void Mainframe_Load(object sender, EventArgs e)
         {
             Fill_DataTable();
