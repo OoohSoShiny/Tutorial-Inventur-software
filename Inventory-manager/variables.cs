@@ -338,10 +338,37 @@ namespace Inventory_manager
         { get { return databaseCounter; } set { databaseCounter = value; } }
         #endregion
 
-        //reason fixed 12; 9 ; reason current ; leader fixed: 12; 42 leader current; date fixed 12; 75 date current; account fixed 12; 108 account current ; btn 15; 142
+        //account fixed 12; 108 account current 87; 108
         #region LastInventory
+        Point reasonFixed = new Point(12, 9);
+        Point reasonCurrent = new Point(87, 9);
+        Point leaderFixed = new Point(12, 42);
+        Point leaderCurrent = new Point(87, 42);
+        Point dateFixed = new Point(12, 75);
+        Point dateCurrent = new Point(87, 75);
+        Point accountFixed = new Point(12, 108);
+        Point accountCurrent = new Point(87, 108);
 
+        Point lastInventoryButtonBack = new Point(15, 142);
 
+        public Point LastInventory_ReasonFixed
+        { get { return reasonFixed; } }
+        public Point LastInventory_ReasonCurrent
+        { get { return reasonCurrent; } }
+        public Point LastInventory_LeaderFixed
+        { get { return leaderFixed; } }
+        public Point LastInventory_LeaderCurrent
+        { get { return leaderCurrent; } }
+        public Point LastInventory_DateFixed
+        { get { return dateFixed; } }
+        public Point LastInventory_DateCurrent
+        { get { return dateCurrent; } }
+        public Point LastInventory_AccountFixed
+        { get { return accountFixed; } }
+        public Point LastInventory_AccountCurrent
+        { get { return accountCurrent; } }
+        public Point LastInventory_ButtonBack
+        { get { return lastInventoryButtonBack; } }
 
         #endregion
     }

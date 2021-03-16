@@ -111,7 +111,7 @@ namespace Inventory_manager
             // 
             // btnNewInventory
             // 
-            this.btnNewInventory.Location = new System.Drawing.Point(204, 401);
+            this.btnNewInventory.Location = new System.Drawing.Point(202, 308);
             this.btnNewInventory.Name = "btnNewInventory";
             this.btnNewInventory.Size = new System.Drawing.Size(102, 23);
             this.btnNewInventory.TabIndex = 0;
@@ -858,7 +858,8 @@ namespace Inventory_manager
             // 
             this.lblLastInventoryAccountCurrent.AutoSize = true;
             this.lblLastInventoryAccountCurrent.Enabled = false;
-            this.lblLastInventoryAccountCurrent.Location = new System.Drawing.Point(87, 108);
+            this.lblLastInventoryAccountCurrent.ForeColor = System.Drawing.Color.Coral;
+            this.lblLastInventoryAccountCurrent.Location = new System.Drawing.Point(100, 108);
             this.lblLastInventoryAccountCurrent.Name = "lblLastInventoryAccountCurrent";
             this.lblLastInventoryAccountCurrent.Size = new System.Drawing.Size(0, 13);
             this.lblLastInventoryAccountCurrent.TabIndex = 68;
@@ -866,18 +867,21 @@ namespace Inventory_manager
             // 
             // btnLastInventoryBack
             // 
+            this.btnLastInventoryBack.Enabled = false;
             this.btnLastInventoryBack.Location = new System.Drawing.Point(15, 142);
             this.btnLastInventoryBack.Name = "btnLastInventoryBack";
             this.btnLastInventoryBack.Size = new System.Drawing.Size(214, 23);
             this.btnLastInventoryBack.TabIndex = 71;
             this.btnLastInventoryBack.Text = "Zurück";
             this.btnLastInventoryBack.UseVisualStyleBackColor = true;
+            this.btnLastInventoryBack.Visible = false;
+            this.btnLastInventoryBack.Click += new System.EventHandler(this.btnLastInventoryBack_Click);
             // 
             // MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(261, 179);
+            this.ClientSize = new System.Drawing.Size(749, 594);
             this.Controls.Add(this.btnLastInventoryBack);
             this.Controls.Add(this.lblLastInventoryAccountCurrent);
             this.Controls.Add(this.lblLastInventoryAccountFixed);

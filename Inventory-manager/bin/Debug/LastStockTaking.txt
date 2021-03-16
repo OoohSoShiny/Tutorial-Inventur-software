@@ -1,1 +1,1 @@
-Öffnung Geschäftstätigkeit;merkl;oo;12.09.1111 00:00:00
+Stichtag;LEADER;ACCOUNT;12.01.9999 00:00:00

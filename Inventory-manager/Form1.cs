@@ -22,16 +22,16 @@ namespace Inventory_manager
         MySqlDataReader myReader;
         MySqlDataAdapter adapter;
         
-        Label[] addWaresLabels, waresIncLabels, currentInventoryLabels, newInvenLabels, newCountLabels;
+        Label[] addWaresLabels, waresIncLabels, currentInventoryLabels, newInvenLabels, newCountLabels, lastInventoryLabels;
         TextBox[] addWaresTextboxes, waresIncTextboxes, currentInventoryTextbox, newInvenTextboxes;
-        Button[] mainWindowButtons, currentInventoryButtons, addWaresButtons, waresIncButtons, newInvenButtons, newCountButtons;
+        Button[] mainWindowButtons, currentInventoryButtons, addWaresButtons, waresIncButtons, newInvenButtons, newCountButtons, lastInvenoryButtons;
         ComboBox[] waresIncCombos, newInvenCombos;
         RadioButton[] newInvenRadios;
         
         Point[] mainWindowButtonPoints, currentInventoryPoints, addWaresLabelsPoints, addWaresTextboxPoints, addWareButtonPoints, waresIncComboPlaces;
         Point[] waresIncTextboxPlaces, waresIncLabelPlaces, waresIncButtonPlaces, currentInventoryDelLabelPlaces, currentInventoryTxtBoxPlaces;
         Point[] newInvenTextboxPlaces, newInvenButtonPlaces, newInvenRadioPlaces, newInvenComboPlaces, newInvenLabelPlaces;
-        Point[] newCountButtonPlace, newCountLabelPlaces;
+        Point[] newCountButtonPlace, newCountLabelPlaces, lastInventoryButtonPlaces, lastInventoryLabelPlaces;
 
         public MainFrame()
         {
@@ -102,10 +102,17 @@ namespace Inventory_manager
             newCountButtons = new Button[] { btnNewCountPlusOne, btnNewCountPlusFive, btnNewCountPlusTen, btnNewCountPlusFifty, btnNewCountSend, btnNewCountMinusOne, btnNewCountMinusTen };
             newCountLabelPlaces = new Point[] { variables.NewCount_LabelWareFixedPlace, variables.NewCount_LabelWareCurrentPlace, variables.NewCount_LabelCountFixedPlace, variables.NewCount_LabelCountCurrentPlace };
             newCountLabels = new Label[] { lblNewCountWareFixed, lblNewCountWareCurrent, lblNewCountCountFixed, lblNewCountCountUpdating };
-            
+
+            //Last Inventory
+            lastInventoryLabels = new Label[] { lblLastInventoryReasonFixed, lblLastInventoryReasonCurrent, lblLastInventoryLeaderFixed, lblLastInventoryLeaderCurrent, lblLastInventoryDateFixed, lblLastInventoryDateCurrent, lblLastInventoryAccountFixed, lblLastInventoryAccountCurrent };
+            lastInventoryLabelPlaces = new Point[] { variables.LastInventory_ReasonFixed, variables.LastInventory_ReasonCurrent, variables.LastInventory_LeaderFixed, variables.LastInventory_LeaderCurrent, variables.LastInventory_DateFixed, variables.LastInventory_DateCurrent, variables.LastInventory_AccountFixed, variables.LastInventory_AccountCurrent };
+            lastInvenoryButtons = new Button[] { btnLastInventoryBack };
+            lastInventoryButtonPlaces = new Point[] { variables.LastInventory_ButtonBack };
+
             //Initial placement of buttons and size of window
             Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);
             Place_New_Buttons(mainWindowButtons, mainWindowButtonPoints);
+
 
             //Giving the comboboxes their datasource
             for (int i = 0; i < waresIncCombos.Length; i++)
@@ -269,6 +276,16 @@ namespace Inventory_manager
             lblNewCountCountUpdating.Text = variables.NewCount_Counter.ToString();
         }
 
+        private void btnLastInventoryBack_Click(object sender, EventArgs e)
+        {
+            Clear_Labels(lastInventoryLabels);
+            Clear_Buttons(lastInvenoryButtons);
+            Place_New_Buttons(mainWindowButtons, mainWindowButtonPoints);
+            this.Text = "Inventur";
+            Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);
+
+        }
+
         //Send count in the Counting tab
         private void btnNewCountSend_Click(object sender, EventArgs e)
         {
@@ -350,14 +367,42 @@ namespace Inventory_manager
             Place_Comboboxes(waresIncCombos, waresIncComboPlaces);
             Place_New_Textboxes(waresIncTextboxes, waresIncTextboxPlaces);
         }
-
+        //"Letzte Inventur" in the main menu
         private void btnInventoryLast_Click(object sender, EventArgs e)
         {
+            Clear_Buttons(mainWindowButtons);
+            Resize_Mainframe(variables.LastInventory_WindowWidth, variables.LastInventory_WindowHeight);
+            Place_New_Labels(lastInventoryLabels, lastInventoryLabelPlaces);
+            Place_New_Buttons(lastInvenoryButtons, lastInventoryButtonPlaces);
+            this.Text = "Letzte Inventur";
+
             if (File.Exists("LastStockTaking.txt"))
             {
                 using (StreamReader sr = new StreamReader("LastStockTaking.txt"))
                 {
+                    string line;
+                    if((line = sr.ReadLine()) != null)
+                    {
+                        String[] streamreaderStringArray = line.Split(';');
 
+                        if(streamreaderStringArray.Length == 4)
+                        {   
+                            lblLastInventoryReasonCurrent.Text = streamreaderStringArray[0];
+                            lblLastInventoryLeaderCurrent.Text = streamreaderStringArray[1];
+                            lblLastInventoryDateCurrent.Text = streamreaderStringArray[3];
+                            lblLastInventoryAccountCurrent.Text = streamreaderStringArray[2];
+                        }
+                        else
+                        {
+                            lblLastInventoryReasonCurrent.Text = streamreaderStringArray[0];
+                            lblLastInventoryLeaderCurrent.Text = streamreaderStringArray[1];
+                            lblLastInventoryDateCurrent.Text = streamreaderStringArray[3];
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Datei leer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             else
@@ -367,8 +412,9 @@ namespace Inventory_manager
         }
         private void btnMainCloseProgram_Click(object sender, EventArgs e)
         {
-            myReader.Close();
+
             Database_Connection_Close();
+
             Environment.Exit(0);
         }
 
