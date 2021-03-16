@@ -16,7 +16,7 @@ namespace Inventory_manager
         { get {return connection_String;} }
 
         //MAIN WINDOW SIZE 295; 130
-        private int mainWindowWidth = 295; private int mainWindowHeight = 130;
+        private int mainWindowWidth = 300; private int mainWindowHeight = 170;
         public int MainWindow_Width
         { get { return mainWindowWidth; } }
         public int MainWindow_Height
@@ -46,6 +46,14 @@ namespace Inventory_manager
 
         //Window size in the "New inventory" Tab
         int newInvenWindowSizeWidth = 367; int newInvenWindowSizeHeight = 310;
+
+        //Window size in the "last inventory" Tab 277; 218
+        int lastInventoryWindowSizeWidth = 280; int lastInventoryWindowSizeHeight = 220;
+        
+        public int LastInventory_WindowWidth
+        { get { return lastInventoryWindowSizeWidth; } }
+        public int LastInventory_WindowHeight
+        { get { return lastInventoryWindowSizeHeight; } }
 
         public int NewInven_WindowWidth
         { get { return newInvenWindowSizeWidth; } }
@@ -125,12 +133,18 @@ namespace Inventory_manager
         #endregion
 
         #region MainWindow
-        //Place of the buttons in the MAIN WINDOW
+        //Place of the buttons in the MAIN WINDOW letzte inventur 12; 90, close 147; 90
         private Point newInventoryBtnPlace = new Point(13,13);
         private Point shipmentIncBtnPlace = new Point(145, 12);
         private Point currentInventoryBtnPlace = new Point(13, 53);
         private Point shipmentOutBtnPlace = new Point(145, 53);
+        private Point lastInventoryBtnPlace = new Point(12, 90);
+        private Point closeProgramButtonPlace = new Point(145, 90);
 
+        public Point LastInventory_ButtonPlace
+        { get { return lastInventoryBtnPlace; } }
+        public Point CloseProgram_ButtonPlace
+        { get { return closeProgramButtonPlace; } }
         public Point NewInvetory_BtnPlace
         { get { return newInventoryBtnPlace; } }
         public Point ShipmentInc_BtnPlace
@@ -322,6 +336,13 @@ namespace Inventory_manager
         { get {return inventurCounter;} set { inventurCounter = value; } }
         public int NewCount_DatabaseWalker
         { get { return databaseCounter; } set { databaseCounter = value; } }
+        #endregion
+
+        //reason fixed 12; 9 ; reason current ; leader fixed: 12; 42 leader current; date fixed 12; 75 date current; account fixed 12; 108 account current ; btn 15; 142
+        #region LastInventory
+
+
+
         #endregion
     }
 }
