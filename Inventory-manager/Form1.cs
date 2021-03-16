@@ -34,7 +34,8 @@ namespace Inventory_manager
         Point[] newCountButtonPlace, newCountLabelPlaces;
 
         public MainFrame()
-        {               
+        {
+            this.CenterToScreen();
             InitializeComponent();
             variables = new Variables();
             Database_Connection_Open();
