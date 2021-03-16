@@ -3,41 +3,57 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using System.Data.SqlClient;
 
 namespace Inventory_manager
 {
     public partial class MainFrame : Form
-    {   
+    {
         //Starting initliazing of necessary classes, arrays etc.
+        DataSet data;
         Variables variables;
         MySqlConnection databaseConnection;
-        MySqlCommand commandDatabase, commandSecondaryDatabase;
-        MySqlDataReader myReader, mySecondaryReader;
+        MySqlCommand commandDatabase;
+        MySqlDataReader myReader;
+        MySqlDataAdapter adapter;
+        
         Label[] addWaresLabels, waresIncLabels, currentInventoryLabels, newInvenLabels, newCountLabels;
         TextBox[] addWaresTextboxes, waresIncTextboxes, currentInventoryTextbox, newInvenTextboxes;
         Button[] mainWindowButtons, currentInventoryButtons, addWaresButtons, waresIncButtons, newInvenButtons, newCountButtons;
         ComboBox[] waresIncCombos, newInvenCombos;
         RadioButton[] newInvenRadios;
+        
         Point[] mainWindowButtonPoints, currentInventoryPoints, addWaresLabelsPoints, addWaresTextboxPoints, addWareButtonPoints, waresIncComboPlaces;
         Point[] waresIncTextboxPlaces, waresIncLabelPlaces, waresIncButtonPlaces, currentInventoryDelLabelPlaces, currentInventoryTxtBoxPlaces;
         Point[] newInvenTextboxPlaces, newInvenButtonPlaces, newInvenRadioPlaces, newInvenComboPlaces, newInvenLabelPlaces;
         Point[] newCountButtonPlace, newCountLabelPlaces;
 
-        string newInvenString; int newInvenCounter = 0;
-
-
-        bool incomingWares = false;
-
         public MainFrame()
-        {   
+        {               
             InitializeComponent();
             variables = new Variables();
+            Database_Connection_Open();
+
+            //Filling list for the data grid
+            try
+            {
+                string query = @"SELECT * FROM wares";
+                commandDatabase = new MySqlCommand(query, databaseConnection);
+                adapter = new MySqlDataAdapter(commandDatabase);
+                data = new DataSet();
+                adapter.Fill(data);
+                dataGridWares.DataSource = data.Tables[0];
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
             //Main Window
             mainWindowButtons = new Button[] { btnInventoryCurrent, btnNewInventory, btnShipmentInc, btnShipmentOut };
             mainWindowButtonPoints = new Point[] { variables.CurrentInventory_BtnPlace, variables.NewInvetory_BtnPlace, variables.ShipmentInc_BtnPlace, variables.ShipmentOut_BtnPlace };
@@ -81,39 +97,26 @@ namespace Inventory_manager
             newInvenRadioPlaces = new Point[] { variables.NewInven_RadioYesPlace, variables.NewInven_RadioNoPlace };
 
             //New Count Window
-            newCountButtonPlace = new Point[] { variables.NewCount_PlusOnePlace, variables.NewCount_PluseFivePlace, variables.NewCount_PlusTenPlace, variables.NewCount_PlusFiftyPlace, variables.NewCount_SendButtonPlace };
-            newCountButtons = new Button[] { btnNewCountPlusOne, btnNewCountPlusFive, btnNewCountPlusTen, btnNewCountPlusFifty, btnNewCountSend };
+            newCountButtonPlace = new Point[] { variables.NewCount_PlusOnePlace, variables.NewCount_PluseFivePlace, variables.NewCount_PlusTenPlace, variables.NewCount_PlusFiftyPlace, variables.NewCount_SendButtonPlace, variables.NewCount_MinusOnePlace, variables.NewCount_MinusTenPlace };
+            newCountButtons = new Button[] { btnNewCountPlusOne, btnNewCountPlusFive, btnNewCountPlusTen, btnNewCountPlusFifty, btnNewCountSend, btnNewCountMinusOne, btnNewCountMinusTen };
             newCountLabelPlaces = new Point[] { variables.NewCount_LabelWareFixedPlace, variables.NewCount_LabelWareCurrentPlace, variables.NewCount_LabelCountFixedPlace, variables.NewCount_LabelCountCurrentPlace };
             newCountLabels = new Label[] { lblNewCountWareFixed, lblNewCountWareCurrent, lblNewCountCountFixed, lblNewCountCountUpdating };
             
             //Initial placement of buttons and size of window
             Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);
             Place_New_Buttons(mainWindowButtons, mainWindowButtonPoints);
+
+            //Giving the comboboxes their datasource
+            for (int i = 0; i < waresIncCombos.Length; i++)
+            {
+                waresIncCombos[i].DisplayMember = "Name";
+                waresIncCombos[i].DataSource = data.Tables[0];         
+            }
+            Database_Connection_Close();
         }
 
-        //Connecting to inventory database
-        private void Database_Connection_Open()
-        {
-            try
-            {
-                databaseConnection = new MySqlConnection(variables.Connection_String);
-                databaseConnection.Open();
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-
-        //Closing Connection to inventory database
-        private void Database_Connection_Close()
-        {
-            try
-            { databaseConnection.Close(); }
-            catch(Exception e)
-            { MessageBox.Show(e.Message); }
-        }
         #region Buttons
+        
         //Main Window buttons
         private void btnNewInventory_Click(object sender, EventArgs e)
         {
@@ -127,12 +130,11 @@ namespace Inventory_manager
             txtNewInvenAccount.Enabled = false;
             Place_Comboboxes(newInvenCombos, newInvenComboPlaces);
             Place_RadioButtons(newInvenRadios, newInvenRadioPlaces);
-
         }
-
+        //Moves to the tab for incoming shipments
         private void btnShipmentInc_Click(object sender, EventArgs e)
         {
-            incomingWares = true;
+            variables.WaresInc_IncBool = true;
             Clear_Buttons(mainWindowButtons);
             Resize_Mainframe(variables.WaresInc_WindowWidth, variables.WaresInc_WindowHeight);
             this.Text = "Eingehende Lieferung";
@@ -141,52 +143,74 @@ namespace Inventory_manager
             Place_Comboboxes(waresIncCombos, waresIncComboPlaces);
             Place_New_Textboxes(waresIncTextboxes, waresIncTextboxPlaces);
         }
-        //In theory the start sending of a new inventory creates a link that can be saves via streamreader, then starts the Actual count
+        
+        //In theory the start of a new inventory creates a string that can be saved via streamreader, or otherwise used for working, then starts the Actual count
         private void btnNewInvenOpen_Click(object sender, EventArgs e)
         {
             string newInvenReason = comboNewInvenReason.Text;
             string newInvenLeader = txtNewInvenLeader.Text;
-            string newInvenAccount = "";
             DateTime newInvenDate = new DateTime();
-            try
-            {
-                newInvenDate = DateTime.ParseExact(txtNewInvenDate.Text, "d", null);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            if(radioNewInvenYes.Checked)
-            {
-                newInvenAccount = txtNewInvenAccount.Text;
-            }
-             newInvenString = newInvenReason +";"+ newInvenLeader + ";" + newInvenAccount + ";" + newInvenDate.ToString();
+            string newInvenAccount = txtNewInvenAccount.Text;
 
-            Clear_All_Comboboxes(newInvenCombos);
-            Clear_All_RadioButtons(newInvenRadios);
-            Clear_All_Textboxes(newInvenTextboxes);
-            Clear_Buttons(newInvenButtons);
-            Clear_Labels(newInvenLabels);
-            Resize_Mainframe(variables.NewCount_WindowWidth, variables.NewCount_WindowHeight);
-            Place_New_Labels(newCountLabels, newCountLabelPlaces);
-            Place_New_Buttons(newCountButtons, newCountButtonPlace);
-            this.Text = "Zählung";
+            if (newInvenLeader != "")
+            {
+                try
+                {   //Parsing the textbox to datetime
+                    newInvenDate = DateTime.ParseExact(txtNewInvenDate.Text, "d", null);
+                    
+                    if (radioNewInvenYes.Checked && txtNewInvenAccount.Text != "Name") //Crafting the string
+                    {   
+                        variables.NewInven_DataInput = newInvenReason + ";" + newInvenLeader + ";" + newInvenAccount + ";" + newInvenDate.ToString();
+                    }
+                    else
+                    {
+                        variables.NewInven_DataInput = newInvenReason + ";" + newInvenLeader + ";" + newInvenDate.ToString();
+                    }
+                    //Saving string via streamwriter
+                    using (StreamWriter sw = new StreamWriter("LastStockTaking.txt"))
+                    {
+                        sw.WriteLine(variables.NewInven_DataInput);
 
-            Database_Connection_Open();
-            try
-            {
-                string query = "SELECT `Name`,`Count` FROM `wares`";
-                commandDatabase = new MySqlCommand(query, databaseConnection);
-                myReader = commandDatabase.ExecuteReader();
-                myReader.Read();
-                lblNewCountWareCurrent.Text = myReader.GetString(0);
+                    }
+                    //Clearing textboxes
+                    comboNewInvenReason.Text = "";
+                    txtNewInvenLeader.Text = "";
+                    txtNewInvenAccount.Text = "Name";
+                    txtNewInvenDate.Text = "";
+
+                    //Moving to the actual "Counting" tab
+                    Clear_All_Comboboxes(newInvenCombos);
+                    Clear_All_RadioButtons(newInvenRadios);
+                    Clear_All_Textboxes(newInvenTextboxes);
+                    Clear_Buttons(newInvenButtons);
+                    Clear_Labels(newInvenLabels);
+                    Resize_Mainframe(variables.NewCount_WindowWidth, variables.NewCount_WindowHeight);
+                    Place_New_Labels(newCountLabels, newCountLabelPlaces);
+                    Place_New_Buttons(newCountButtons, newCountButtonPlace);
+                    this.Text = "Zählung";
+
+                    //establish connection, and get the needed Name and item count from the database via query
+                    Database_Connection_Open();
+
+                    string query = "SELECT `Name`,`Count` FROM `wares`";
+                    commandDatabase = new MySqlCommand(query, databaseConnection);
+                    myReader = commandDatabase.ExecuteReader();
+                    myReader.Read();
+                    lblNewCountWareCurrent.Text = myReader.GetString(0);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "Das gültige Datumsformat ist dd.mm.yyyy");
+                }
             }
-            catch(Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Inventurleiter angeben", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        //Going back to the main menu from the "new inventory" tab
         private void newInvenBtnCancel_Click(object sender, EventArgs e)
         {
             Clear_Buttons(newInvenButtons);
@@ -196,99 +220,108 @@ namespace Inventory_manager
             Clear_All_RadioButtons(newInvenRadios);
             Place_New_Buttons(mainWindowButtons, mainWindowButtonPoints);
             this.Text = "Inventur";
-            Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);
-            
+            Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);            
         }
 
-        private void radioNewInvenYes_CheckedChanged(object sender, EventArgs e)
-        {
-            if(radioNewInvenYes.Checked)
-            {
-                txtNewInvenAccount.Text = "";
-                txtNewInvenAccount.Enabled = true;
-            }
-            else
-            {
-                txtNewInvenAccount.Enabled = false;
-                txtNewInvenAccount.Text = "Name";
-            }
-        }
-
+        //The six buttons for counting items in the "counting" Tab (+1, +5, +10, +50, -1, -10)
         private void btnNewCountPlusOne_Click(object sender, EventArgs e)
         {
-            newInvenCounter++;
-            lblNewCountCountUpdating.Text = newInvenCounter.ToString();
+            variables.NewCount_Counter++;
+            lblNewCountCountUpdating.Text = variables.NewCount_Counter.ToString();
         }
 
         private void btnNewCountPlusFive_Click(object sender, EventArgs e)
         {
-            newInvenCounter+= 5;
-            lblNewCountCountUpdating.Text = newInvenCounter.ToString();
+            variables.NewCount_Counter += 5;
+            lblNewCountCountUpdating.Text = variables.NewCount_Counter.ToString();
         }
 
         private void btnNewCountPlusTen_Click(object sender, EventArgs e)
         {
-            newInvenCounter += 10;
-            lblNewCountCountUpdating.Text = newInvenCounter.ToString();
+            variables.NewCount_Counter += 10;
+            lblNewCountCountUpdating.Text = variables.NewCount_Counter.ToString();
         }
 
         private void btnNewCountPlusFifty_Click(object sender, EventArgs e)
         {
-            newInvenCounter += 50;
-            lblNewCountCountUpdating.Text = newInvenCounter.ToString();
+            variables.NewCount_Counter += 50;
+            lblNewCountCountUpdating.Text = variables.NewCount_Counter.ToString();
         }
 
+        private void btnNewCountMinusOne_Click_Click(object sender, EventArgs e)
+        {
+            variables.NewCount_Counter--;
+            if(variables.NewCount_Counter < 0)
+            {
+                variables.NewCount_Counter = 0;
+            }
+            lblNewCountCountUpdating.Text = variables.NewCount_Counter.ToString();
+        }
+
+        private void btnNewCountMinusTen_Click_Click(object sender, EventArgs e)
+        {
+            variables.NewCount_Counter-=10;
+            if (variables.NewCount_Counter < 0)
+            {
+                variables.NewCount_Counter = 0;
+            }
+            lblNewCountCountUpdating.Text = variables.NewCount_Counter.ToString();
+        }
+
+        //Send count in the Counting tab
         private void btnNewCountSend_Click(object sender, EventArgs e)
         {
             try
             {
-                //newInvenCounter
+                //reader stores in variables, oldname is a compare-string if the reader visited the last line
                 int countAmount;
                 string countName = myReader.GetString(0);
                 string oldname = myReader.GetString(0);
                 Int32.TryParse(myReader.GetString(1), out countAmount);
-                int countResult = countAmount - newInvenCounter;
                 
+                //compare databank result to count result
+                int countResult = countAmount - variables.NewCount_Counter;
                 
+                //If there are more items than expected, and asks if the databank should be updated
                 if (countResult < 0)
                 {
+                    countResult *= -1;
                     DialogResult dialogResult = MessageBox.Show("Es gibt einen Überschuss von " + countResult + " Einheiten, den Wert in der Datenbank anpassen?", "Überschuss", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        string secondaryQuery = "UPDATE wares SET Count='" + countAmount + "'WHERE Name =" + countName + ";";
-                        commandSecondaryDatabase = new MySqlCommand(secondaryQuery, databaseConnection);
-                        mySecondaryReader = commandSecondaryDatabase.ExecuteReader();
-                        mySecondaryReader.Close();
+                        NewCount_Databank_Updater(countName);
                     }
                 }
                 
-                
+                //If there are less items than expected, and asks if the databank should be updated
                 else if(countResult > 0)
-                {
-                    countResult *= -1;
+                {                    
                     DialogResult dialogResult = MessageBox.Show("Es gibt einen Fehlbetrag von " + countResult + " Einheiten, den Wert in der Datenbank anpassen?", "Fehlbetrag", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        string secondaryQuery = "UPDATE wares SET Count='" + newInvenCounter + "'WHERE Name =" + countName + ";";
-                        commandSecondaryDatabase = new MySqlCommand(secondaryQuery, databaseConnection);
-                        mySecondaryReader = commandSecondaryDatabase.ExecuteReader();
-                        mySecondaryReader.Close();
+                        NewCount_Databank_Updater(countName);
                     }
                 }                                
+                //If the count fits accurately with the databank
                 else
                 {
                     MessageBox.Show("Der gezählte Betrag stimmt mit der Datenbank überein", "Zählung korrekt", MessageBoxButtons.OK);
                 }
-
+                //Moves to the next line of the query
                 myReader.Read();
                 lblNewCountWareCurrent.Text = myReader.GetString(0);
                 string newName = myReader.GetString(0);
-                newInvenCounter = 0;
-                lblNewCountCountUpdating.Text = newInvenCounter.ToString();
+                variables.NewCount_Counter = 0;
+                lblNewCountCountUpdating.Text = variables.NewCount_Counter.ToString();
+                variables.NewCount_DatabaseWalker++;
                 
+                //If, even after moving to the next line, the name of the item stays the same (aka there is no new item)
+                //Goes back to the main menu
                 if (newName == oldname)
                 {
+                    myReader.Close();
                     MessageBox.Show("Zählung abgeschlossen, Rückkehr zum Hauptmenü", "Abschluss", MessageBoxButtons.OK);
+                    Fill_DataTable();
 
                     Clear_Labels(newCountLabels);
                     Clear_Buttons(newCountButtons);
@@ -305,6 +338,7 @@ namespace Inventory_manager
             }
         }
 
+        //Goes to the tab where you can change the amount of items
         private void btnShipmentOut_Click(object sender, EventArgs e)
         {
             Clear_Buttons(mainWindowButtons);
@@ -315,6 +349,7 @@ namespace Inventory_manager
             Place_Comboboxes(waresIncCombos, waresIncComboPlaces);
             Place_New_Textboxes(waresIncTextboxes, waresIncTextboxPlaces);
         }
+
         //"Deletes" Mainwindow, places Current-Inventory Window
         private void btnInventoryCurrent_Click(object sender, EventArgs e)
         {
@@ -340,6 +375,7 @@ namespace Inventory_manager
             this.Text = "Inventur";
         }
 
+        //Goes to the tab where you add a new item to the list
         private void btnCurrentInventoryAdd_Click(object sender, EventArgs e)
         {
             Database_Connection_Open();
@@ -365,7 +401,7 @@ namespace Inventory_manager
             if(!deleteParseBool)
             { MessageBox.Show("Bitte einen gültigen Index eingeben.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
             
-            else//What happens when valid input was entered
+            else //What happens when valid input was entered
             {
                 try //forms a query with the given index and deletes that row
                 {
@@ -384,6 +420,7 @@ namespace Inventory_manager
             }
         }
 
+        //Returns from incoming wares to main menu
         private void btnIncBack_Click(object sender, EventArgs e)
         {
             Clear_All_Textboxes(waresIncTextboxes);
@@ -393,7 +430,7 @@ namespace Inventory_manager
             Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);
             Place_New_Buttons(mainWindowButtons, mainWindowButtonPoints);
             this.Text = "Inventur";
-            incomingWares = false;
+            variables.WaresInc_IncBool = false;
         }
 
         //Checks for possible mistakes made (no/wrong entry), and changes everything where value was changed
@@ -404,14 +441,14 @@ namespace Inventory_manager
             bool textBoxTryParse = false;
             Database_Connection_Open();
             try
-            {       //Goes through each Textbox
+            {   //Goes through each Textbox
                 for(int i = 0; i < waresIncTextboxes.Length; i++)
                 {   //Checks if something was written in the textbox
                     if(waresIncTextboxes[i].Text != "")
                     {   //If yes, try parsing
                         textBoxTryParse = double.TryParse(waresIncTextboxes[i].Text, out addValue);
                         if (!textBoxTryParse || addValue < 0)
-                        {   //Error if value was below 0 or not a number
+                        {   //Error if value was below 0 or not a number, and skips this loop iteration
                             MessageBox.Show(waresIncCombos[i].Text + " konnte nicht verändert werden.");
                             continue;
                         }
@@ -421,7 +458,7 @@ namespace Inventory_manager
                             string query = "SELECT `Count`,`ID` FROM `wares` WHERE `Name`=\"" + waresIncCombos[i].Text + "\";";
                             commandDatabase = new MySqlCommand(query, databaseConnection);
                             myReader = commandDatabase.ExecuteReader();
-                            //Goes this route if it found the item in question (Which should be the case considering its from the drop down list)
+                            //Goes this route if it found the item in question (Which should be the case considering its from a drop down list)
                             if(myReader.HasRows)
                             {   //Gets the count and id and stores it in variables
                                 myReader.Read();
@@ -429,8 +466,8 @@ namespace Inventory_manager
                                 string idString = myReader.GetString(1);
                                 double.TryParse(countString, out oldValue);
                                 
-                                //Calculates new value depending if the wares are coming or going
-                                if(incomingWares)
+                                //Calculates new value depending on if the wares are coming or going
+                                if(variables.WaresInc_IncBool)
                                 { addValue += oldValue; }
                                 else
                                 { 
@@ -484,59 +521,83 @@ namespace Inventory_manager
             double countParsed;
             bool priceParse = double.TryParse(txtAddWarePrice.Text, out price);
             bool countParse = double.TryParse(txtAddWareCount.Text, out countParsed);
-            //Checks if user input was valid
-            if(!priceParse|| !countParse)
-            {   
-                foreach(TextBox text in addWaresTextboxes)
-                {
-                    text.Text = "";
-                }
-                MessageBox.Show("Keine gültige Zahl als Preis oder Menge eingegeben", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            //Checks if minimum requirements are met
-            else if(name == "")
-            {
-                MessageBox.Show("Es muss ein Name eingegeben werden", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if(unit == "")
-            {
-                MessageBox.Show("Es muss eine Einheit eingegeben werden", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
 
-            //Normal route if valid input was given, rounds numbers, clears textboxes, and builds an Insert string
-            else
-            {   
-                price = Math.Round(price, 2);
-                countParsed = Math.Round(countParsed, 2);
-             
-                foreach (TextBox text in addWaresTextboxes)
+            try//Checks if user input was valid
+            {
+                if (!priceParse || !countParse)
                 {
-                    text.Text = "";
+                    foreach (TextBox text in addWaresTextboxes)
+                    {
+                        text.Text = "";
+                    }
+                    MessageBox.Show("Keine gültige Zahl als Preis oder Menge eingegeben", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                //Checks if minimum requirements are met
+                else if (name == "")
+                {
+                    MessageBox.Show("Es muss ein Name eingegeben werden", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (unit == "")
+                {
+                    MessageBox.Show("Es muss eine Einheit eingegeben werden", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                //Normal route if valid input was given, rounds numbers, clears textboxes, and builds an Insert string
+                else
+                {
+                    price = Math.Round(price, 2);
+                    countParsed = Math.Round(countParsed, 2);
+
+                    foreach (TextBox text in addWaresTextboxes)
+                    {
+                        text.Text = "";
+                    }
                     Database_Connection_Open();
-                try
-                {
-                    string query = "INSERT INTO wares(`Name`, `Price`, `Count`, `MeasureUnit`, `ID`) VALUES('" + name + "', '" + price + "', '" + count + "', '" + unit + "', NULL)";
-                    commandDatabase = new MySqlCommand(query, databaseConnection);
-                    myReader = commandDatabase.ExecuteReader();
-                    MessageBox.Show("Erfolgreich eingefügt.", "Erfolg", MessageBoxButtons.OK);
-                    Fill_DataTable();
+                    try
+                    {
+                        string query = "INSERT INTO wares(`Name`, `Price`, `Count`, `MeasureUnit`, `ID`) VALUES('" + name + "', '" + price + "', '" + count + "', '" + unit + "', NULL)";
+                        commandDatabase = new MySqlCommand(query, databaseConnection);
+                        myReader = commandDatabase.ExecuteReader();
+                        MessageBox.Show("Erfolgreich eingefügt.", "Erfolg", MessageBoxButtons.OK);
+                        Fill_DataTable();
+                    }
+                    catch (Exception ex)
+                    { MessageBox.Show(ex.Message); }
                 }
-                catch(Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                Database_Connection_Close();
+                myReader.Close();
             }
-            Database_Connection_Close();
-            myReader.Close();
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         #endregion
+        //All on-click events of the buttons 
+
+        //Enables the textbox when the radiobox of the accountant was changed to "yes"
+        private void radioNewInvenYes_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioNewInvenYes.Checked)
+            {
+                txtNewInvenAccount.Text = "";
+                txtNewInvenAccount.Enabled = true;
+            }
+            else
+            {
+                txtNewInvenAccount.Enabled = false;
+                txtNewInvenAccount.Text = "Name";
+            }
+        }
+
         //Calling the method necessary for filling the data grid
         private void Mainframe_Load(object sender, EventArgs e)
         {
             Fill_DataTable();
         }
+
+        #region UI_Updates
         //Disables all buttons and makes them invisible
         private void Clear_Buttons(Button[] oldBtnArray)
         {
@@ -662,17 +723,71 @@ namespace Inventory_manager
             }
         }
         
-        //WORK IN PROGRESS grid data table a bit stubborn on updating its values
+        //Updating data grid and comboboxes
         private void Fill_DataTable()
         {
             try
             {
-                this.waresTableAdapter.Fill(this.inventurDataSet.wares);
+                string query = @"SELECT * FROM wares";
+                commandDatabase = new MySqlCommand(query, databaseConnection);
+                adapter = new MySqlDataAdapter(commandDatabase);
+                DataSet data = new DataSet();
+                adapter.Fill(data);
+                dataGridWares.DataSource = data.Tables[0];
+
+                for (int i = 0; i < waresIncCombos.Length; i++)
+                {
+                    waresIncCombos[i].DisplayMember = "Name";
+                    waresIncCombos[i].DataSource = data.Tables[0];
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        #endregion  
+        //Replacing / Adding / Removing / Updating UI elements like buttons, labels, datagrids etc.
+        
+        
+        //closes myReader, opens up a new query, updates "name", and moves old reader to position of the Databasewalker
+        private void NewCount_Databank_Updater(string name)
+        {
+            myReader.Close();
+            
+            string secondaryQuery = "UPDATE wares SET Count='" + variables.NewCount_Counter + "'WHERE Name ='" + name + "';";
+            commandDatabase = new MySqlCommand(secondaryQuery, databaseConnection);
+            myReader = commandDatabase.ExecuteReader();
+            myReader.Close();
+            
+            string query = "SELECT `Name`,`Count` FROM `wares`";
+            commandDatabase = new MySqlCommand(query, databaseConnection);
+            myReader = commandDatabase.ExecuteReader();
+            for (int i = 0; i <= variables.NewCount_DatabaseWalker; i++)
+            { myReader.Read(); }
+        }
+        
+        //Connecting to inventory database
+        private void Database_Connection_Open()
+        {
+            try
+            {
+                databaseConnection = new MySqlConnection(variables.Connection_String);
+                databaseConnection.Open();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        //Closing Connection to inventory database
+        private void Database_Connection_Close()
+        {
+            try
+            { databaseConnection.Close(); }
+            catch (Exception e)
+            { MessageBox.Show(e.Message); }
         }
     }
 }

@@ -35,11 +35,6 @@ namespace Inventory_manager
             this.btnInventoryCurrent = new System.Windows.Forms.Button();
             this.btnShipmentOut = new System.Windows.Forms.Button();
             this.dataGridWares = new System.Windows.Forms.DataGridView();
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.countDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.measureUnitDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.waresBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.inventurDataSet = new Inventory_manager.inventurDataSet();
             this.waresTableAdapter = new Inventory_manager.inventurDataSetTableAdapters.waresTableAdapter();
@@ -96,6 +91,8 @@ namespace Inventory_manager
             this.btnNewCountPlusTen = new System.Windows.Forms.Button();
             this.btnNewCountPlusFifty = new System.Windows.Forms.Button();
             this.btnNewCountSend = new System.Windows.Forms.Button();
+            this.btnNewCountMinusOne = new System.Windows.Forms.Button();
+            this.btnNewCountMinusTen = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridWares)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.waresBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inventurDataSet)).BeginInit();
@@ -147,51 +144,13 @@ namespace Inventory_manager
             this.dataGridWares.AllowUserToDeleteRows = false;
             this.dataGridWares.AllowUserToResizeColumns = false;
             this.dataGridWares.AllowUserToResizeRows = false;
-            this.dataGridWares.AutoGenerateColumns = false;
             this.dataGridWares.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dataGridWares.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.nameDataGridViewTextBoxColumn,
-            this.priceDataGridViewTextBoxColumn,
-            this.countDataGridViewTextBoxColumn,
-            this.measureUnitDataGridViewTextBoxColumn,
-            this.iDDataGridViewTextBoxColumn});
-            this.dataGridWares.DataSource = this.waresBindingSource;
             this.dataGridWares.Enabled = false;
-            this.dataGridWares.Location = new System.Drawing.Point(423, 547);
+            this.dataGridWares.Location = new System.Drawing.Point(361, 183);
             this.dataGridWares.Name = "dataGridWares";
             this.dataGridWares.Size = new System.Drawing.Size(157, 67);
             this.dataGridWares.TabIndex = 4;
             this.dataGridWares.Visible = false;
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            // 
-            // priceDataGridViewTextBoxColumn
-            // 
-            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
-            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
-            // 
-            // countDataGridViewTextBoxColumn
-            // 
-            this.countDataGridViewTextBoxColumn.DataPropertyName = "Count";
-            this.countDataGridViewTextBoxColumn.HeaderText = "Count";
-            this.countDataGridViewTextBoxColumn.Name = "countDataGridViewTextBoxColumn";
-            // 
-            // measureUnitDataGridViewTextBoxColumn
-            // 
-            this.measureUnitDataGridViewTextBoxColumn.DataPropertyName = "MeasureUnit";
-            this.measureUnitDataGridViewTextBoxColumn.HeaderText = "MeasureUnit";
-            this.measureUnitDataGridViewTextBoxColumn.Name = "measureUnitDataGridViewTextBoxColumn";
-            // 
-            // iDDataGridViewTextBoxColumn
-            // 
-            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
-            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
             // 
             // waresBindingSource
             // 
@@ -356,12 +315,10 @@ namespace Inventory_manager
             // 
             // dropDownWareInc01
             // 
-            this.dropDownWareInc01.DataSource = this.waresBindingSource;
-            this.dropDownWareInc01.DisplayMember = "Name";
             this.dropDownWareInc01.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc01.Enabled = false;
             this.dropDownWareInc01.FormattingEnabled = true;
-            this.dropDownWareInc01.Location = new System.Drawing.Point(768, 511);
+            this.dropDownWareInc01.Location = new System.Drawing.Point(624, 211);
             this.dropDownWareInc01.Name = "dropDownWareInc01";
             this.dropDownWareInc01.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc01.TabIndex = 19;
@@ -369,12 +326,10 @@ namespace Inventory_manager
             // 
             // dropDownWareInc02
             // 
-            this.dropDownWareInc02.DataSource = this.waresBindingSource;
-            this.dropDownWareInc02.DisplayMember = "Name";
             this.dropDownWareInc02.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc02.Enabled = false;
             this.dropDownWareInc02.FormattingEnabled = true;
-            this.dropDownWareInc02.Location = new System.Drawing.Point(506, 492);
+            this.dropDownWareInc02.Location = new System.Drawing.Point(620, 168);
             this.dropDownWareInc02.Name = "dropDownWareInc02";
             this.dropDownWareInc02.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc02.TabIndex = 20;
@@ -382,12 +337,10 @@ namespace Inventory_manager
             // 
             // dropDownWareInc03
             // 
-            this.dropDownWareInc03.DataSource = this.waresBindingSource;
-            this.dropDownWareInc03.DisplayMember = "Name";
             this.dropDownWareInc03.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc03.Enabled = false;
             this.dropDownWareInc03.FormattingEnabled = true;
-            this.dropDownWareInc03.Location = new System.Drawing.Point(278, 431);
+            this.dropDownWareInc03.Location = new System.Drawing.Point(620, 135);
             this.dropDownWareInc03.Name = "dropDownWareInc03";
             this.dropDownWareInc03.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc03.TabIndex = 21;
@@ -395,12 +348,10 @@ namespace Inventory_manager
             // 
             // dropDownWareInc04
             // 
-            this.dropDownWareInc04.DataSource = this.waresBindingSource;
-            this.dropDownWareInc04.DisplayMember = "Name";
             this.dropDownWareInc04.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc04.Enabled = false;
             this.dropDownWareInc04.FormattingEnabled = true;
-            this.dropDownWareInc04.Location = new System.Drawing.Point(291, 468);
+            this.dropDownWareInc04.Location = new System.Drawing.Point(625, 250);
             this.dropDownWareInc04.Name = "dropDownWareInc04";
             this.dropDownWareInc04.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc04.TabIndex = 22;
@@ -408,12 +359,10 @@ namespace Inventory_manager
             // 
             // dropDownWareInc05
             // 
-            this.dropDownWareInc05.DataSource = this.waresBindingSource;
-            this.dropDownWareInc05.DisplayMember = "Name";
             this.dropDownWareInc05.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc05.Enabled = false;
             this.dropDownWareInc05.FormattingEnabled = true;
-            this.dropDownWareInc05.Location = new System.Drawing.Point(139, 420);
+            this.dropDownWareInc05.Location = new System.Drawing.Point(624, 286);
             this.dropDownWareInc05.Name = "dropDownWareInc05";
             this.dropDownWareInc05.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc05.TabIndex = 23;
@@ -623,7 +572,7 @@ namespace Inventory_manager
             // txtNewInvenAccount
             // 
             this.txtNewInvenAccount.Enabled = false;
-            this.txtNewInvenAccount.Location = new System.Drawing.Point(173, 447);
+            this.txtNewInvenAccount.Location = new System.Drawing.Point(16, 332);
             this.txtNewInvenAccount.Name = "txtNewInvenAccount";
             this.txtNewInvenAccount.Size = new System.Drawing.Size(121, 20);
             this.txtNewInvenAccount.TabIndex = 44;
@@ -640,7 +589,7 @@ namespace Inventory_manager
             "Öffnung Geschäftstätigkeit",
             "Schließung",
             "Übernahme"});
-            this.comboNewInvenReason.Location = new System.Drawing.Point(74, 506);
+            this.comboNewInvenReason.Location = new System.Drawing.Point(112, 567);
             this.comboNewInvenReason.Name = "comboNewInvenReason";
             this.comboNewInvenReason.Size = new System.Drawing.Size(176, 21);
             this.comboNewInvenReason.TabIndex = 45;
@@ -649,7 +598,7 @@ namespace Inventory_manager
             // btnNewInvenOpen
             // 
             this.btnNewInvenOpen.Enabled = false;
-            this.btnNewInvenOpen.Location = new System.Drawing.Point(244, 458);
+            this.btnNewInvenOpen.Location = new System.Drawing.Point(433, 376);
             this.btnNewInvenOpen.Name = "btnNewInvenOpen";
             this.btnNewInvenOpen.Size = new System.Drawing.Size(308, 23);
             this.btnNewInvenOpen.TabIndex = 46;
@@ -685,9 +634,10 @@ namespace Inventory_manager
             // 
             this.lblNewCountWareCurrent.AutoSize = true;
             this.lblNewCountWareCurrent.Enabled = false;
+            this.lblNewCountWareCurrent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNewCountWareCurrent.Location = new System.Drawing.Point(78, 13);
             this.lblNewCountWareCurrent.Name = "lblNewCountWareCurrent";
-            this.lblNewCountWareCurrent.Size = new System.Drawing.Size(40, 13);
+            this.lblNewCountWareCurrent.Size = new System.Drawing.Size(44, 13);
             this.lblNewCountWareCurrent.TabIndex = 49;
             this.lblNewCountWareCurrent.Text = "WARE";
             this.lblNewCountWareCurrent.Visible = false;
@@ -766,7 +716,7 @@ namespace Inventory_manager
             // btnNewCountSend
             // 
             this.btnNewCountSend.Enabled = false;
-            this.btnNewCountSend.Location = new System.Drawing.Point(93, 248);
+            this.btnNewCountSend.Location = new System.Drawing.Point(93, 253);
             this.btnNewCountSend.Name = "btnNewCountSend";
             this.btnNewCountSend.Size = new System.Drawing.Size(156, 23);
             this.btnNewCountSend.TabIndex = 56;
@@ -775,11 +725,37 @@ namespace Inventory_manager
             this.btnNewCountSend.Visible = false;
             this.btnNewCountSend.Click += new System.EventHandler(this.btnNewCountSend_Click);
             // 
+            // btnNewCountMinusOne
+            // 
+            this.btnNewCountMinusOne.Enabled = false;
+            this.btnNewCountMinusOne.Location = new System.Drawing.Point(12, 186);
+            this.btnNewCountMinusOne.Name = "btnNewCountMinusOne";
+            this.btnNewCountMinusOne.Size = new System.Drawing.Size(75, 23);
+            this.btnNewCountMinusOne.TabIndex = 57;
+            this.btnNewCountMinusOne.Text = "-1";
+            this.btnNewCountMinusOne.UseVisualStyleBackColor = true;
+            this.btnNewCountMinusOne.Visible = false;
+            this.btnNewCountMinusOne.Click += new System.EventHandler(this.btnNewCountMinusOne_Click_Click);
+            // 
+            // btnNewCountMinusTen
+            // 
+            this.btnNewCountMinusTen.Enabled = false;
+            this.btnNewCountMinusTen.Location = new System.Drawing.Point(174, 186);
+            this.btnNewCountMinusTen.Name = "btnNewCountMinusTen";
+            this.btnNewCountMinusTen.Size = new System.Drawing.Size(75, 23);
+            this.btnNewCountMinusTen.TabIndex = 58;
+            this.btnNewCountMinusTen.Text = "-10";
+            this.btnNewCountMinusTen.UseVisualStyleBackColor = true;
+            this.btnNewCountMinusTen.Visible = false;
+            this.btnNewCountMinusTen.Click += new System.EventHandler(this.btnNewCountMinusTen_Click_Click);
+            // 
             // MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(341, 283);
+            this.ClientSize = new System.Drawing.Size(341, 288);
+            this.Controls.Add(this.btnNewCountMinusTen);
+            this.Controls.Add(this.btnNewCountMinusOne);
             this.Controls.Add(this.btnNewCountSend);
             this.Controls.Add(this.btnNewCountPlusFifty);
             this.Controls.Add(this.btnNewCountPlusTen);
@@ -902,11 +878,6 @@ namespace Inventory_manager
         private System.Windows.Forms.ComboBox comboNewInvenReason;
         private System.Windows.Forms.Button btnNewInvenOpen;
         private System.Windows.Forms.Button newInvenBtnCancel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn countDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn measureUnitDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
         private System.Windows.Forms.Label lblNewCountWareFixed;
         private System.Windows.Forms.Label lblNewCountWareCurrent;
         private System.Windows.Forms.Label lblNewCountCountFixed;
@@ -916,6 +887,8 @@ namespace Inventory_manager
         private System.Windows.Forms.Button btnNewCountPlusTen;
         private System.Windows.Forms.Button btnNewCountPlusFifty;
         private System.Windows.Forms.Button btnNewCountSend;
+        private System.Windows.Forms.Button btnNewCountMinusOne;
+        private System.Windows.Forms.Button btnNewCountMinusTen;
     }
 }
 

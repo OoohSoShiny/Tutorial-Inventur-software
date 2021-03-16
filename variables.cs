@@ -9,7 +9,7 @@ namespace Inventory_manager
 {
     public class Variables
     {
-
+        #region Window_Sizes
         //Connection string for MySQL Database "inventur"
         private string connection_String = "datasource=127.0.0.1;port=3306;username=root;password=;database=inventur;";
         public string Connection_String
@@ -58,10 +58,10 @@ namespace Inventory_manager
         { get { return newCountWindowWidth; } }
         public int NewCount_WindowHeight
         { get { return newCountWindowHeight; } }
+        #endregion
 
-
+        #region IncOut_Wares
         //Places of the ComboBoxes in the "Incoming Wares" Tab
-
         private Point waresIncComboOne = new Point(12, 29);
         private Point waresIncComboTwo = new Point(12, 56);
         private Point waresIncComboThree = new Point(12, 83);
@@ -78,6 +78,14 @@ namespace Inventory_manager
         { get { return waresIncComboFour; } }
         public Point WaresInc_ComboFive
         { get { return waresIncComboFive; } }
+
+        //The bool to decide if the wares are incoming/outgoing
+        bool incomingwares = false;
+
+        public bool WaresInc_IncBool
+        { get { return incomingwares; } 
+          set { incomingwares = value; }
+        }
 
         //Places of the textboxes in the "Incoming Wares" Tab
         private Point waresIncTextOne = new Point(139, 29);
@@ -114,8 +122,9 @@ namespace Inventory_manager
         { get { return waresIncButtonCancel; } }
         public Point WaresInc_ButtonSend
         { get { return waresIncButtonSend; } }
+        #endregion
 
-
+        #region MainWindow
         //Place of the buttons in the MAIN WINDOW
         private Point newInventoryBtnPlace = new Point(13,13);
         private Point shipmentIncBtnPlace = new Point(145, 12);
@@ -130,8 +139,9 @@ namespace Inventory_manager
         { get { return currentInventoryBtnPlace; } }
         public Point ShipmentOut_BtnPlace
         { get { return shipmentOutBtnPlace; } }
+        #endregion
 
-
+        #region CurrentInventory
         //Size and Place of the DataGrid in the CURRENT INVENTORY
         private int datagridWidth = 500; private int datagridHeight = 230;
         public int DataGrid_Width
@@ -154,7 +164,6 @@ namespace Inventory_manager
         { get { return currentWaresDelTextbox; } }
 
         //Places of the buttons in the CURRENT INVENTORY Tab
-
         private Point currentInventoryBtnBack = new Point(13, 13);
         private Point currentInventoryBtnAdd = new Point(193, 13);
         private Point currentInventoryBtnDel = new Point(402, 13);
@@ -164,7 +173,9 @@ namespace Inventory_manager
         { get { return currentInventoryBtnAdd; } }
         public Point CurrentInventory_DelBtnPlace
         { get { return currentInventoryBtnDel; } }
+        #endregion
 
+        #region AddingWares
         //Places of Labels in the ADD WARE Tab
         private Point addWareMainLabelPoint = new Point(13, 13);
         private Point addWareLabelNamePoint = new Point(25, 54);
@@ -206,7 +217,9 @@ namespace Inventory_manager
         { get { return addWareAddButtonPoint; } }
         public Point AddWareCancelButtonPoint
         { get { return addWareCancelButtonPoint; } }
+        #endregion
 
+        #region NewInventory
         //Places of labels in the NEW INVENTORY tab
         Point newInvenLabelReason = new Point(13, 20);
         Point newInvenLabelDate = new Point(13, 58);
@@ -230,10 +243,7 @@ namespace Inventory_manager
         public Point NewInven_ButtonCancel
         { get { return newInvenBtnCancel; } }
 
-
-
         //Place of radio buttons in the NEW INVENTORY tab
-
         Point newInvenRadioYes = new Point(87, 133);
         Point NewInvenRadioNo = new Point(129, 133);
 
@@ -243,7 +253,6 @@ namespace Inventory_manager
         { get { return NewInvenRadioNo; } }
 
         //places of the textboxes in the NEW INVENTORY tab
-
         Point newInventxtDate = new Point(87, 55);
         Point newInventxtLeader = new Point(87, 97);
         Point newInventxtAccount = new Point(182 , 132);
@@ -259,7 +268,9 @@ namespace Inventory_manager
         Point newInvenComboReason = new Point(87, 17);
         public Point NewInven_ComboReasonPlace
         { get { return newInvenComboReason; } }
+        #endregion
 
+        #region CountingTab
         //Place of the labels in the COUNTING tab
         Point newCountWareFixed = new Point(13, 13);
         Point newCountWareCurrent = new Point(78, 13);
@@ -274,14 +285,16 @@ namespace Inventory_manager
         { get { return newCountCountFixed; } }
         public Point NewCount_LabelCountCurrentPlace
         { get { return newCountCountUpdating; } }
-        
-        
+
+
         //Place of the buttons in the COUNTING tab
         Point newCountPlusOne = new Point(12, 135);
         Point newCountPlusFive = new Point(93, 135);
         Point newCountPluseTen = new Point(174, 135);
         Point newCountPlusFifty = new Point(255, 135);
         Point newCountSend = new Point(93, 248);
+        Point newCountMinusOne = new Point(12, 186);
+        Point newCountMinusTen = new Point(174, 186);
 
         public Point NewCount_PlusOnePlace
         { get { return newCountPlusOne; } }
@@ -293,5 +306,22 @@ namespace Inventory_manager
         { get { return newCountPlusFifty; } }
         public Point NewCount_SendButtonPlace
         { get { return newCountSend; } }
+        public Point NewCount_MinusOnePlace
+        { get { return newCountMinusOne; } }
+        public Point NewCount_MinusTenPlace
+        { get { return newCountMinusTen; } }
+
+        //Needed variables for the new inventory/Counting tab
+        string inventurString = "";
+        int inventurCounter = 0;
+        int databaseCounter = 0;
+
+        public string NewInven_DataInput
+        { get { return inventurString; } set { inventurString = value; } }
+        public int NewCount_Counter
+        { get {return inventurCounter;} set { inventurCounter = value; } }
+        public int NewCount_DatabaseWalker
+        { get { return databaseCounter; } set { databaseCounter = value; } }
+        #endregion
     }
 }
