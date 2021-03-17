@@ -104,6 +104,9 @@ namespace Inventory_manager
             this.lblLastInventoryAccountFixed = new System.Windows.Forms.Label();
             this.lblLastInventoryAccountCurrent = new System.Windows.Forms.Label();
             this.btnLastInventoryBack = new System.Windows.Forms.Button();
+            this.btnLastInventoryPrevious = new System.Windows.Forms.Button();
+            this.btnLastInventoryNext = new System.Windows.Forms.Button();
+            this.lblLastInventoryWares = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridWares)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.waresBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inventurDataSet)).BeginInit();
@@ -111,7 +114,7 @@ namespace Inventory_manager
             // 
             // btnNewInventory
             // 
-            this.btnNewInventory.Location = new System.Drawing.Point(202, 308);
+            this.btnNewInventory.Location = new System.Drawing.Point(566, 175);
             this.btnNewInventory.Name = "btnNewInventory";
             this.btnNewInventory.Size = new System.Drawing.Size(102, 23);
             this.btnNewInventory.TabIndex = 0;
@@ -121,7 +124,7 @@ namespace Inventory_manager
             // 
             // btnShipmentInc
             // 
-            this.btnShipmentInc.Location = new System.Drawing.Point(387, 447);
+            this.btnShipmentInc.Location = new System.Drawing.Point(524, 175);
             this.btnShipmentInc.Name = "btnShipmentInc";
             this.btnShipmentInc.Size = new System.Drawing.Size(117, 23);
             this.btnShipmentInc.TabIndex = 1;
@@ -131,7 +134,7 @@ namespace Inventory_manager
             // 
             // btnInventoryCurrent
             // 
-            this.btnInventoryCurrent.Location = new System.Drawing.Point(312, 432);
+            this.btnInventoryCurrent.Location = new System.Drawing.Point(492, 175);
             this.btnInventoryCurrent.Name = "btnInventoryCurrent";
             this.btnInventoryCurrent.Size = new System.Drawing.Size(126, 23);
             this.btnInventoryCurrent.TabIndex = 2;
@@ -141,7 +144,7 @@ namespace Inventory_manager
             // 
             // btnShipmentOut
             // 
-            this.btnShipmentOut.Location = new System.Drawing.Point(274, 450);
+            this.btnShipmentOut.Location = new System.Drawing.Point(518, 175);
             this.btnShipmentOut.Name = "btnShipmentOut";
             this.btnShipmentOut.Size = new System.Drawing.Size(125, 23);
             this.btnShipmentOut.TabIndex = 3;
@@ -157,7 +160,7 @@ namespace Inventory_manager
             this.dataGridWares.AllowUserToResizeRows = false;
             this.dataGridWares.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridWares.Enabled = false;
-            this.dataGridWares.Location = new System.Drawing.Point(361, 183);
+            this.dataGridWares.Location = new System.Drawing.Point(530, 32);
             this.dataGridWares.Name = "dataGridWares";
             this.dataGridWares.Size = new System.Drawing.Size(157, 67);
             this.dataGridWares.TabIndex = 4;
@@ -180,7 +183,7 @@ namespace Inventory_manager
             // btnCurrentInventoryBack
             // 
             this.btnCurrentInventoryBack.Enabled = false;
-            this.btnCurrentInventoryBack.Location = new System.Drawing.Point(110, 447);
+            this.btnCurrentInventoryBack.Location = new System.Drawing.Point(524, 175);
             this.btnCurrentInventoryBack.Name = "btnCurrentInventoryBack";
             this.btnCurrentInventoryBack.Size = new System.Drawing.Size(75, 23);
             this.btnCurrentInventoryBack.TabIndex = 5;
@@ -192,7 +195,7 @@ namespace Inventory_manager
             // btnCurrentInventoryAdd
             // 
             this.btnCurrentInventoryAdd.Enabled = false;
-            this.btnCurrentInventoryAdd.Location = new System.Drawing.Point(112, 523);
+            this.btnCurrentInventoryAdd.Location = new System.Drawing.Point(556, 175);
             this.btnCurrentInventoryAdd.Name = "btnCurrentInventoryAdd";
             this.btnCurrentInventoryAdd.Size = new System.Drawing.Size(105, 23);
             this.btnCurrentInventoryAdd.TabIndex = 6;
@@ -204,7 +207,7 @@ namespace Inventory_manager
             // btnCurrentInventoryDel
             // 
             this.btnCurrentInventoryDel.Enabled = false;
-            this.btnCurrentInventoryDel.Location = new System.Drawing.Point(312, 526);
+            this.btnCurrentInventoryDel.Location = new System.Drawing.Point(498, 175);
             this.btnCurrentInventoryDel.Name = "btnCurrentInventoryDel";
             this.btnCurrentInventoryDel.Size = new System.Drawing.Size(105, 23);
             this.btnCurrentInventoryDel.TabIndex = 7;
@@ -217,7 +220,7 @@ namespace Inventory_manager
             // 
             this.lblAddWareText.AutoSize = true;
             this.lblAddWareText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAddWareText.Location = new System.Drawing.Point(515, 476);
+            this.lblAddWareText.Location = new System.Drawing.Point(471, 294);
             this.lblAddWareText.Name = "lblAddWareText";
             this.lblAddWareText.Size = new System.Drawing.Size(103, 13);
             this.lblAddWareText.TabIndex = 8;
@@ -227,7 +230,7 @@ namespace Inventory_manager
             // lblAddWareTextName
             // 
             this.lblAddWareTextName.AutoSize = true;
-            this.lblAddWareTextName.Location = new System.Drawing.Point(638, 417);
+            this.lblAddWareTextName.Location = new System.Drawing.Point(520, 294);
             this.lblAddWareTextName.Name = "lblAddWareTextName";
             this.lblAddWareTextName.Size = new System.Drawing.Size(35, 13);
             this.lblAddWareTextName.TabIndex = 9;
@@ -237,7 +240,7 @@ namespace Inventory_manager
             // lblAddWareTextPrice
             // 
             this.lblAddWareTextPrice.AutoSize = true;
-            this.lblAddWareTextPrice.Location = new System.Drawing.Point(49, 381);
+            this.lblAddWareTextPrice.Location = new System.Drawing.Point(473, 294);
             this.lblAddWareTextPrice.Name = "lblAddWareTextPrice";
             this.lblAddWareTextPrice.Size = new System.Drawing.Size(30, 13);
             this.lblAddWareTextPrice.TabIndex = 10;
@@ -247,7 +250,7 @@ namespace Inventory_manager
             // lblAddWareTextCount
             // 
             this.lblAddWareTextCount.AutoSize = true;
-            this.lblAddWareTextCount.Location = new System.Drawing.Point(495, 447);
+            this.lblAddWareTextCount.Location = new System.Drawing.Point(515, 294);
             this.lblAddWareTextCount.Name = "lblAddWareTextCount";
             this.lblAddWareTextCount.Size = new System.Drawing.Size(40, 13);
             this.lblAddWareTextCount.TabIndex = 11;
@@ -257,7 +260,7 @@ namespace Inventory_manager
             // lblAddWareTextUnit
             // 
             this.lblAddWareTextUnit.AutoSize = true;
-            this.lblAddWareTextUnit.Location = new System.Drawing.Point(309, 415);
+            this.lblAddWareTextUnit.Location = new System.Drawing.Point(515, 294);
             this.lblAddWareTextUnit.Name = "lblAddWareTextUnit";
             this.lblAddWareTextUnit.Size = new System.Drawing.Size(59, 13);
             this.lblAddWareTextUnit.TabIndex = 12;
@@ -267,7 +270,7 @@ namespace Inventory_manager
             // txtAddWareName
             // 
             this.txtAddWareName.Enabled = false;
-            this.txtAddWareName.Location = new System.Drawing.Point(12, 377);
+            this.txtAddWareName.Location = new System.Drawing.Point(530, 230);
             this.txtAddWareName.Name = "txtAddWareName";
             this.txtAddWareName.Size = new System.Drawing.Size(100, 20);
             this.txtAddWareName.TabIndex = 13;
@@ -276,7 +279,7 @@ namespace Inventory_manager
             // txtAddWarePrice
             // 
             this.txtAddWarePrice.Enabled = false;
-            this.txtAddWarePrice.Location = new System.Drawing.Point(558, 447);
+            this.txtAddWarePrice.Location = new System.Drawing.Point(541, 230);
             this.txtAddWarePrice.Name = "txtAddWarePrice";
             this.txtAddWarePrice.Size = new System.Drawing.Size(100, 20);
             this.txtAddWarePrice.TabIndex = 14;
@@ -285,7 +288,7 @@ namespace Inventory_manager
             // txtAddWareCount
             // 
             this.txtAddWareCount.Enabled = false;
-            this.txtAddWareCount.Location = new System.Drawing.Point(312, 392);
+            this.txtAddWareCount.Location = new System.Drawing.Point(524, 230);
             this.txtAddWareCount.Name = "txtAddWareCount";
             this.txtAddWareCount.Size = new System.Drawing.Size(100, 20);
             this.txtAddWareCount.TabIndex = 15;
@@ -294,7 +297,7 @@ namespace Inventory_manager
             // txtAddWareUnit
             // 
             this.txtAddWareUnit.Enabled = false;
-            this.txtAddWareUnit.Location = new System.Drawing.Point(139, 381);
+            this.txtAddWareUnit.Location = new System.Drawing.Point(541, 230);
             this.txtAddWareUnit.Name = "txtAddWareUnit";
             this.txtAddWareUnit.Size = new System.Drawing.Size(100, 20);
             this.txtAddWareUnit.TabIndex = 16;
@@ -303,7 +306,7 @@ namespace Inventory_manager
             // btnAddWareAdd
             // 
             this.btnAddWareAdd.Enabled = false;
-            this.btnAddWareAdd.Location = new System.Drawing.Point(110, 483);
+            this.btnAddWareAdd.Location = new System.Drawing.Point(547, 166);
             this.btnAddWareAdd.Name = "btnAddWareAdd";
             this.btnAddWareAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAddWareAdd.TabIndex = 17;
@@ -315,7 +318,7 @@ namespace Inventory_manager
             // btnAddWareCancel
             // 
             this.btnAddWareCancel.Enabled = false;
-            this.btnAddWareCancel.Location = new System.Drawing.Point(31, 466);
+            this.btnAddWareCancel.Location = new System.Drawing.Point(543, 175);
             this.btnAddWareCancel.Name = "btnAddWareCancel";
             this.btnAddWareCancel.Size = new System.Drawing.Size(75, 23);
             this.btnAddWareCancel.TabIndex = 18;
@@ -329,7 +332,7 @@ namespace Inventory_manager
             this.dropDownWareInc01.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc01.Enabled = false;
             this.dropDownWareInc01.FormattingEnabled = true;
-            this.dropDownWareInc01.Location = new System.Drawing.Point(624, 211);
+            this.dropDownWareInc01.Location = new System.Drawing.Point(197, 204);
             this.dropDownWareInc01.Name = "dropDownWareInc01";
             this.dropDownWareInc01.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc01.TabIndex = 19;
@@ -340,7 +343,7 @@ namespace Inventory_manager
             this.dropDownWareInc02.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc02.Enabled = false;
             this.dropDownWareInc02.FormattingEnabled = true;
-            this.dropDownWareInc02.Location = new System.Drawing.Point(620, 168);
+            this.dropDownWareInc02.Location = new System.Drawing.Point(197, 241);
             this.dropDownWareInc02.Name = "dropDownWareInc02";
             this.dropDownWareInc02.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc02.TabIndex = 20;
@@ -351,7 +354,7 @@ namespace Inventory_manager
             this.dropDownWareInc03.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc03.Enabled = false;
             this.dropDownWareInc03.FormattingEnabled = true;
-            this.dropDownWareInc03.Location = new System.Drawing.Point(620, 135);
+            this.dropDownWareInc03.Location = new System.Drawing.Point(197, 281);
             this.dropDownWareInc03.Name = "dropDownWareInc03";
             this.dropDownWareInc03.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc03.TabIndex = 21;
@@ -362,7 +365,7 @@ namespace Inventory_manager
             this.dropDownWareInc04.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc04.Enabled = false;
             this.dropDownWareInc04.FormattingEnabled = true;
-            this.dropDownWareInc04.Location = new System.Drawing.Point(625, 250);
+            this.dropDownWareInc04.Location = new System.Drawing.Point(197, 321);
             this.dropDownWareInc04.Name = "dropDownWareInc04";
             this.dropDownWareInc04.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc04.TabIndex = 22;
@@ -373,7 +376,7 @@ namespace Inventory_manager
             this.dropDownWareInc05.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dropDownWareInc05.Enabled = false;
             this.dropDownWareInc05.FormattingEnabled = true;
-            this.dropDownWareInc05.Location = new System.Drawing.Point(624, 286);
+            this.dropDownWareInc05.Location = new System.Drawing.Point(197, 366);
             this.dropDownWareInc05.Name = "dropDownWareInc05";
             this.dropDownWareInc05.Size = new System.Drawing.Size(121, 21);
             this.dropDownWareInc05.TabIndex = 23;
@@ -382,7 +385,7 @@ namespace Inventory_manager
             // txtWareInc01
             // 
             this.txtWareInc01.Enabled = false;
-            this.txtWareInc01.Location = new System.Drawing.Point(682, 408);
+            this.txtWareInc01.Location = new System.Drawing.Point(541, 230);
             this.txtWareInc01.Name = "txtWareInc01";
             this.txtWareInc01.Size = new System.Drawing.Size(100, 20);
             this.txtWareInc01.TabIndex = 24;
@@ -391,7 +394,7 @@ namespace Inventory_manager
             // txtWareInc02
             // 
             this.txtWareInc02.Enabled = false;
-            this.txtWareInc02.Location = new System.Drawing.Point(185, 466);
+            this.txtWareInc02.Location = new System.Drawing.Point(530, 230);
             this.txtWareInc02.Name = "txtWareInc02";
             this.txtWareInc02.Size = new System.Drawing.Size(100, 20);
             this.txtWareInc02.TabIndex = 25;
@@ -400,7 +403,7 @@ namespace Inventory_manager
             // txtWareInc03
             // 
             this.txtWareInc03.Enabled = false;
-            this.txtWareInc03.Location = new System.Drawing.Point(682, 432);
+            this.txtWareInc03.Location = new System.Drawing.Point(547, 230);
             this.txtWareInc03.Name = "txtWareInc03";
             this.txtWareInc03.Size = new System.Drawing.Size(100, 20);
             this.txtWareInc03.TabIndex = 26;
@@ -409,7 +412,7 @@ namespace Inventory_manager
             // txtWareInc04
             // 
             this.txtWareInc04.Enabled = false;
-            this.txtWareInc04.Location = new System.Drawing.Point(624, 476);
+            this.txtWareInc04.Location = new System.Drawing.Point(541, 230);
             this.txtWareInc04.Name = "txtWareInc04";
             this.txtWareInc04.Size = new System.Drawing.Size(100, 20);
             this.txtWareInc04.TabIndex = 27;
@@ -418,7 +421,7 @@ namespace Inventory_manager
             // txtWareInc05
             // 
             this.txtWareInc05.Enabled = false;
-            this.txtWareInc05.Location = new System.Drawing.Point(641, 485);
+            this.txtWareInc05.Location = new System.Drawing.Point(543, 230);
             this.txtWareInc05.Name = "txtWareInc05";
             this.txtWareInc05.Size = new System.Drawing.Size(100, 20);
             this.txtWareInc05.TabIndex = 28;
@@ -427,7 +430,7 @@ namespace Inventory_manager
             // btnIncBack
             // 
             this.btnIncBack.Enabled = false;
-            this.btnIncBack.Location = new System.Drawing.Point(112, 464);
+            this.btnIncBack.Location = new System.Drawing.Point(492, 175);
             this.btnIncBack.Name = "btnIncBack";
             this.btnIncBack.Size = new System.Drawing.Size(75, 23);
             this.btnIncBack.TabIndex = 29;
@@ -439,7 +442,7 @@ namespace Inventory_manager
             // btnIncSend
             // 
             this.btnIncSend.Enabled = false;
-            this.btnIncSend.Location = new System.Drawing.Point(29, 490);
+            this.btnIncSend.Location = new System.Drawing.Point(543, 166);
             this.btnIncSend.Name = "btnIncSend";
             this.btnIncSend.Size = new System.Drawing.Size(75, 23);
             this.btnIncSend.TabIndex = 30;
@@ -451,7 +454,7 @@ namespace Inventory_manager
             // lblIncWare
             // 
             this.lblIncWare.AutoSize = true;
-            this.lblIncWare.Location = new System.Drawing.Point(231, 450);
+            this.lblIncWare.Location = new System.Drawing.Point(476, 294);
             this.lblIncWare.Name = "lblIncWare";
             this.lblIncWare.Size = new System.Drawing.Size(33, 13);
             this.lblIncWare.TabIndex = 31;
@@ -461,7 +464,7 @@ namespace Inventory_manager
             // lblIncCount
             // 
             this.lblIncCount.AutoSize = true;
-            this.lblIncCount.Location = new System.Drawing.Point(415, 439);
+            this.lblIncCount.Location = new System.Drawing.Point(515, 294);
             this.lblIncCount.Name = "lblIncCount";
             this.lblIncCount.Size = new System.Drawing.Size(40, 13);
             this.lblIncCount.TabIndex = 32;
@@ -471,7 +474,7 @@ namespace Inventory_manager
             // txtCurrentInventoryDelete
             // 
             this.txtCurrentInventoryDelete.Enabled = false;
-            this.txtCurrentInventoryDelete.Location = new System.Drawing.Point(641, 511);
+            this.txtCurrentInventoryDelete.Location = new System.Drawing.Point(538, 230);
             this.txtCurrentInventoryDelete.Name = "txtCurrentInventoryDelete";
             this.txtCurrentInventoryDelete.Size = new System.Drawing.Size(105, 20);
             this.txtCurrentInventoryDelete.TabIndex = 33;
@@ -480,7 +483,7 @@ namespace Inventory_manager
             // lblCurrentInventoryDelete
             // 
             this.lblCurrentInventoryDelete.AutoSize = true;
-            this.lblCurrentInventoryDelete.Location = new System.Drawing.Point(498, 526);
+            this.lblCurrentInventoryDelete.Location = new System.Drawing.Point(441, 294);
             this.lblCurrentInventoryDelete.Name = "lblCurrentInventoryDelete";
             this.lblCurrentInventoryDelete.Size = new System.Drawing.Size(133, 13);
             this.lblCurrentInventoryDelete.TabIndex = 34;
@@ -491,7 +494,7 @@ namespace Inventory_manager
             // 
             this.lblnewInvenReason.AutoSize = true;
             this.lblnewInvenReason.Enabled = false;
-            this.lblnewInvenReason.Location = new System.Drawing.Point(331, 499);
+            this.lblnewInvenReason.Location = new System.Drawing.Point(499, 294);
             this.lblnewInvenReason.Name = "lblnewInvenReason";
             this.lblnewInvenReason.Size = new System.Drawing.Size(68, 13);
             this.lblnewInvenReason.TabIndex = 35;
@@ -502,7 +505,7 @@ namespace Inventory_manager
             // 
             this.lblNewInvenDate.AutoSize = true;
             this.lblNewInvenDate.Enabled = false;
-            this.lblNewInvenDate.Location = new System.Drawing.Point(184, 490);
+            this.lblNewInvenDate.Location = new System.Drawing.Point(489, 289);
             this.lblNewInvenDate.Name = "lblNewInvenDate";
             this.lblNewInvenDate.Size = new System.Drawing.Size(41, 13);
             this.lblNewInvenDate.TabIndex = 37;
@@ -513,7 +516,7 @@ namespace Inventory_manager
             // 
             this.lblNewInvenLeader.AutoSize = true;
             this.lblNewInvenLeader.Enabled = false;
-            this.lblNewInvenLeader.Location = new System.Drawing.Point(231, 485);
+            this.lblNewInvenLeader.Location = new System.Drawing.Point(471, 294);
             this.lblNewInvenLeader.Name = "lblNewInvenLeader";
             this.lblNewInvenLeader.Size = new System.Drawing.Size(71, 13);
             this.lblNewInvenLeader.TabIndex = 38;
@@ -524,7 +527,7 @@ namespace Inventory_manager
             // 
             this.lblNewInvenAccount.AutoSize = true;
             this.lblNewInvenAccount.Enabled = false;
-            this.lblNewInvenAccount.Location = new System.Drawing.Point(28, 514);
+            this.lblNewInvenAccount.Location = new System.Drawing.Point(484, 294);
             this.lblNewInvenAccount.Name = "lblNewInvenAccount";
             this.lblNewInvenAccount.Size = new System.Drawing.Size(71, 13);
             this.lblNewInvenAccount.TabIndex = 39;
@@ -534,7 +537,7 @@ namespace Inventory_manager
             // txtNewInvenDate
             // 
             this.txtNewInvenDate.Enabled = false;
-            this.txtNewInvenDate.Location = new System.Drawing.Point(400, 519);
+            this.txtNewInvenDate.Location = new System.Drawing.Point(529, 230);
             this.txtNewInvenDate.Name = "txtNewInvenDate";
             this.txtNewInvenDate.Size = new System.Drawing.Size(100, 20);
             this.txtNewInvenDate.TabIndex = 40;
@@ -543,7 +546,7 @@ namespace Inventory_manager
             // txtNewInvenLeader
             // 
             this.txtNewInvenLeader.Enabled = false;
-            this.txtNewInvenLeader.Location = new System.Drawing.Point(418, 482);
+            this.txtNewInvenLeader.Location = new System.Drawing.Point(538, 230);
             this.txtNewInvenLeader.Name = "txtNewInvenLeader";
             this.txtNewInvenLeader.Size = new System.Drawing.Size(100, 20);
             this.txtNewInvenLeader.TabIndex = 41;
@@ -553,7 +556,7 @@ namespace Inventory_manager
             // 
             this.radioNewInvenYes.AutoSize = true;
             this.radioNewInvenYes.Enabled = false;
-            this.radioNewInvenYes.Location = new System.Drawing.Point(52, 443);
+            this.radioNewInvenYes.Location = new System.Drawing.Point(664, 294);
             this.radioNewInvenYes.Name = "radioNewInvenYes";
             this.radioNewInvenYes.Size = new System.Drawing.Size(36, 17);
             this.radioNewInvenYes.TabIndex = 42;
@@ -567,7 +570,7 @@ namespace Inventory_manager
             this.radioNewInvenNo.AutoSize = true;
             this.radioNewInvenNo.Checked = true;
             this.radioNewInvenNo.Enabled = false;
-            this.radioNewInvenNo.Location = new System.Drawing.Point(16, 437);
+            this.radioNewInvenNo.Location = new System.Drawing.Point(653, 294);
             this.radioNewInvenNo.Name = "radioNewInvenNo";
             this.radioNewInvenNo.Size = new System.Drawing.Size(47, 17);
             this.radioNewInvenNo.TabIndex = 43;
@@ -583,7 +586,7 @@ namespace Inventory_manager
             // txtNewInvenAccount
             // 
             this.txtNewInvenAccount.Enabled = false;
-            this.txtNewInvenAccount.Location = new System.Drawing.Point(16, 332);
+            this.txtNewInvenAccount.Location = new System.Drawing.Point(520, 230);
             this.txtNewInvenAccount.Name = "txtNewInvenAccount";
             this.txtNewInvenAccount.Size = new System.Drawing.Size(121, 20);
             this.txtNewInvenAccount.TabIndex = 44;
@@ -600,7 +603,7 @@ namespace Inventory_manager
             "Öffnung Geschäftstätigkeit",
             "Schließung",
             "Übernahme"});
-            this.comboNewInvenReason.Location = new System.Drawing.Point(112, 567);
+            this.comboNewInvenReason.Location = new System.Drawing.Point(530, 126);
             this.comboNewInvenReason.Name = "comboNewInvenReason";
             this.comboNewInvenReason.Size = new System.Drawing.Size(176, 21);
             this.comboNewInvenReason.TabIndex = 45;
@@ -609,7 +612,7 @@ namespace Inventory_manager
             // btnNewInvenOpen
             // 
             this.btnNewInvenOpen.Enabled = false;
-            this.btnNewInvenOpen.Location = new System.Drawing.Point(433, 376);
+            this.btnNewInvenOpen.Location = new System.Drawing.Point(402, 175);
             this.btnNewInvenOpen.Name = "btnNewInvenOpen";
             this.btnNewInvenOpen.Size = new System.Drawing.Size(308, 23);
             this.btnNewInvenOpen.TabIndex = 46;
@@ -621,7 +624,7 @@ namespace Inventory_manager
             // newInvenBtnCancel
             // 
             this.newInvenBtnCancel.Enabled = false;
-            this.newInvenBtnCancel.Location = new System.Drawing.Point(416, 421);
+            this.newInvenBtnCancel.Location = new System.Drawing.Point(476, 175);
             this.newInvenBtnCancel.Name = "newInvenBtnCancel";
             this.newInvenBtnCancel.Size = new System.Drawing.Size(211, 23);
             this.newInvenBtnCancel.TabIndex = 47;
@@ -634,7 +637,7 @@ namespace Inventory_manager
             // 
             this.lblNewCountWareFixed.AutoSize = true;
             this.lblNewCountWareFixed.Enabled = false;
-            this.lblNewCountWareFixed.Location = new System.Drawing.Point(154, 411);
+            this.lblNewCountWareFixed.Location = new System.Drawing.Point(500, 294);
             this.lblNewCountWareFixed.Name = "lblNewCountWareFixed";
             this.lblNewCountWareFixed.Size = new System.Drawing.Size(33, 13);
             this.lblNewCountWareFixed.TabIndex = 48;
@@ -646,7 +649,7 @@ namespace Inventory_manager
             this.lblNewCountWareCurrent.AutoSize = true;
             this.lblNewCountWareCurrent.Enabled = false;
             this.lblNewCountWareCurrent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNewCountWareCurrent.Location = new System.Drawing.Point(220, 411);
+            this.lblNewCountWareCurrent.Location = new System.Drawing.Point(489, 294);
             this.lblNewCountWareCurrent.Name = "lblNewCountWareCurrent";
             this.lblNewCountWareCurrent.Size = new System.Drawing.Size(44, 13);
             this.lblNewCountWareCurrent.TabIndex = 49;
@@ -657,7 +660,7 @@ namespace Inventory_manager
             // 
             this.lblNewCountCountFixed.AutoSize = true;
             this.lblNewCountCountFixed.Enabled = false;
-            this.lblNewCountCountFixed.Location = new System.Drawing.Point(253, 395);
+            this.lblNewCountCountFixed.Location = new System.Drawing.Point(453, 294);
             this.lblNewCountCountFixed.Name = "lblNewCountCountFixed";
             this.lblNewCountCountFixed.Size = new System.Drawing.Size(40, 13);
             this.lblNewCountCountFixed.TabIndex = 50;
@@ -679,7 +682,7 @@ namespace Inventory_manager
             // btnNewCountPlusOne
             // 
             this.btnNewCountPlusOne.Enabled = false;
-            this.btnNewCountPlusOne.Location = new System.Drawing.Point(449, 347);
+            this.btnNewCountPlusOne.Location = new System.Drawing.Point(556, 175);
             this.btnNewCountPlusOne.Name = "btnNewCountPlusOne";
             this.btnNewCountPlusOne.Size = new System.Drawing.Size(75, 23);
             this.btnNewCountPlusOne.TabIndex = 52;
@@ -691,7 +694,7 @@ namespace Inventory_manager
             // btnNewCountPlusFive
             // 
             this.btnNewCountPlusFive.Enabled = false;
-            this.btnNewCountPlusFive.Location = new System.Drawing.Point(530, 347);
+            this.btnNewCountPlusFive.Location = new System.Drawing.Point(566, 175);
             this.btnNewCountPlusFive.Name = "btnNewCountPlusFive";
             this.btnNewCountPlusFive.Size = new System.Drawing.Size(75, 23);
             this.btnNewCountPlusFive.TabIndex = 53;
@@ -703,7 +706,7 @@ namespace Inventory_manager
             // btnNewCountPlusTen
             // 
             this.btnNewCountPlusTen.Enabled = false;
-            this.btnNewCountPlusTen.Location = new System.Drawing.Point(518, 308);
+            this.btnNewCountPlusTen.Location = new System.Drawing.Point(593, 175);
             this.btnNewCountPlusTen.Name = "btnNewCountPlusTen";
             this.btnNewCountPlusTen.Size = new System.Drawing.Size(75, 23);
             this.btnNewCountPlusTen.TabIndex = 54;
@@ -715,7 +718,7 @@ namespace Inventory_manager
             // btnNewCountPlusFifty
             // 
             this.btnNewCountPlusFifty.Enabled = false;
-            this.btnNewCountPlusFifty.Location = new System.Drawing.Point(334, 348);
+            this.btnNewCountPlusFifty.Location = new System.Drawing.Point(583, 175);
             this.btnNewCountPlusFifty.Name = "btnNewCountPlusFifty";
             this.btnNewCountPlusFifty.Size = new System.Drawing.Size(75, 23);
             this.btnNewCountPlusFifty.TabIndex = 55;
@@ -727,7 +730,7 @@ namespace Inventory_manager
             // btnNewCountSend
             // 
             this.btnNewCountSend.Enabled = false;
-            this.btnNewCountSend.Location = new System.Drawing.Point(191, 429);
+            this.btnNewCountSend.Location = new System.Drawing.Point(502, 175);
             this.btnNewCountSend.Name = "btnNewCountSend";
             this.btnNewCountSend.Size = new System.Drawing.Size(156, 23);
             this.btnNewCountSend.TabIndex = 56;
@@ -739,7 +742,7 @@ namespace Inventory_manager
             // btnNewCountMinusOne
             // 
             this.btnNewCountMinusOne.Enabled = false;
-            this.btnNewCountMinusOne.Location = new System.Drawing.Point(624, 329);
+            this.btnNewCountMinusOne.Location = new System.Drawing.Point(583, 175);
             this.btnNewCountMinusOne.Name = "btnNewCountMinusOne";
             this.btnNewCountMinusOne.Size = new System.Drawing.Size(75, 23);
             this.btnNewCountMinusOne.TabIndex = 57;
@@ -751,7 +754,7 @@ namespace Inventory_manager
             // btnNewCountMinusTen
             // 
             this.btnNewCountMinusTen.Enabled = false;
-            this.btnNewCountMinusTen.Location = new System.Drawing.Point(312, 473);
+            this.btnNewCountMinusTen.Location = new System.Drawing.Point(543, 166);
             this.btnNewCountMinusTen.Name = "btnNewCountMinusTen";
             this.btnNewCountMinusTen.Size = new System.Drawing.Size(75, 23);
             this.btnNewCountMinusTen.TabIndex = 58;
@@ -762,7 +765,7 @@ namespace Inventory_manager
             // 
             // btnInventoryLast
             // 
-            this.btnInventoryLast.Location = new System.Drawing.Point(29, 408);
+            this.btnInventoryLast.Location = new System.Drawing.Point(529, 175);
             this.btnInventoryLast.Name = "btnInventoryLast";
             this.btnInventoryLast.Size = new System.Drawing.Size(102, 23);
             this.btnInventoryLast.TabIndex = 59;
@@ -772,7 +775,7 @@ namespace Inventory_manager
             // 
             // btnMainCloseProgram
             // 
-            this.btnMainCloseProgram.Location = new System.Drawing.Point(202, 352);
+            this.btnMainCloseProgram.Location = new System.Drawing.Point(547, 175);
             this.btnMainCloseProgram.Name = "btnMainCloseProgram";
             this.btnMainCloseProgram.Size = new System.Drawing.Size(126, 23);
             this.btnMainCloseProgram.TabIndex = 60;
@@ -868,7 +871,7 @@ namespace Inventory_manager
             // btnLastInventoryBack
             // 
             this.btnLastInventoryBack.Enabled = false;
-            this.btnLastInventoryBack.Location = new System.Drawing.Point(15, 142);
+            this.btnLastInventoryBack.Location = new System.Drawing.Point(15, 175);
             this.btnLastInventoryBack.Name = "btnLastInventoryBack";
             this.btnLastInventoryBack.Size = new System.Drawing.Size(214, 23);
             this.btnLastInventoryBack.TabIndex = 71;
@@ -877,11 +880,49 @@ namespace Inventory_manager
             this.btnLastInventoryBack.Visible = false;
             this.btnLastInventoryBack.Click += new System.EventHandler(this.btnLastInventoryBack_Click);
             // 
+            // btnLastInventoryPrevious
+            // 
+            this.btnLastInventoryPrevious.Enabled = false;
+            this.btnLastInventoryPrevious.Location = new System.Drawing.Point(15, 146);
+            this.btnLastInventoryPrevious.Name = "btnLastInventoryPrevious";
+            this.btnLastInventoryPrevious.Size = new System.Drawing.Size(32, 23);
+            this.btnLastInventoryPrevious.TabIndex = 72;
+            this.btnLastInventoryPrevious.Text = "<<";
+            this.btnLastInventoryPrevious.UseVisualStyleBackColor = true;
+            this.btnLastInventoryPrevious.Visible = false;
+            this.btnLastInventoryPrevious.Click += new System.EventHandler(this.btnLastInventoryPrevious_Click);
+            // 
+            // btnLastInventoryNext
+            // 
+            this.btnLastInventoryNext.Enabled = false;
+            this.btnLastInventoryNext.Location = new System.Drawing.Point(197, 146);
+            this.btnLastInventoryNext.Name = "btnLastInventoryNext";
+            this.btnLastInventoryNext.Size = new System.Drawing.Size(32, 23);
+            this.btnLastInventoryNext.TabIndex = 73;
+            this.btnLastInventoryNext.Text = ">>";
+            this.btnLastInventoryNext.UseVisualStyleBackColor = true;
+            this.btnLastInventoryNext.Visible = false;
+            this.btnLastInventoryNext.Click += new System.EventHandler(this.btnLastInventoryNext_Click);
+            // 
+            // lblLastInventoryWares
+            // 
+            this.lblLastInventoryWares.AutoSize = true;
+            this.lblLastInventoryWares.Enabled = false;
+            this.lblLastInventoryWares.Location = new System.Drawing.Point(53, 151);
+            this.lblLastInventoryWares.Name = "lblLastInventoryWares";
+            this.lblLastInventoryWares.Size = new System.Drawing.Size(36, 13);
+            this.lblLastInventoryWares.TabIndex = 74;
+            this.lblLastInventoryWares.Text = "Ware:";
+            this.lblLastInventoryWares.Visible = false;
+            // 
             // MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(749, 594);
+            this.ClientSize = new System.Drawing.Size(722, 626);
+            this.Controls.Add(this.lblLastInventoryWares);
+            this.Controls.Add(this.btnLastInventoryNext);
+            this.Controls.Add(this.btnLastInventoryPrevious);
             this.Controls.Add(this.btnLastInventoryBack);
             this.Controls.Add(this.lblLastInventoryAccountCurrent);
             this.Controls.Add(this.lblLastInventoryAccountFixed);
@@ -1039,6 +1080,9 @@ namespace Inventory_manager
         private System.Windows.Forms.Label lblLastInventoryAccountFixed;
         private System.Windows.Forms.Label lblLastInventoryAccountCurrent;
         private System.Windows.Forms.Button btnLastInventoryBack;
+        private System.Windows.Forms.Button btnLastInventoryPrevious;
+        private System.Windows.Forms.Button btnLastInventoryNext;
+        private System.Windows.Forms.Label lblLastInventoryWares;
     }
 }
 

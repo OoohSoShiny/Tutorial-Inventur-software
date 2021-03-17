@@ -1,1 +1,1 @@
-Stichtag;LEADER;ACCOUNT;12.01.9999 00:00:00
+Öffnung Geschäftstätigkeit;Kuchen;n/A;12.04.2312 00:00:00;Milch 200;Backpulver 100

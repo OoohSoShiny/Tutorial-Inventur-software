@@ -40,7 +40,7 @@ namespace Inventory_manager
             variables = new Variables();
             Database_Connection_Open();
 
-            //Filling list for the data grid
+            //Filling list for the data grid, and creating the string array from the old inventory txt
             try
             {
                 string query = @"SELECT * FROM wares";
@@ -54,7 +54,8 @@ namespace Inventory_manager
             {
                 MessageBox.Show(ex.Message);
             }
-            
+            Read_LastStockpile();
+
             //Main Window
             mainWindowButtons = new Button[] { btnInventoryCurrent, btnNewInventory, btnShipmentInc, btnShipmentOut,btnInventoryLast, btnMainCloseProgram };
             mainWindowButtonPoints = new Point[] { variables.CurrentInventory_BtnPlace, variables.NewInvetory_BtnPlace, variables.ShipmentInc_BtnPlace, variables.ShipmentOut_BtnPlace, variables.LastInventory_ButtonPlace, variables.CloseProgram_ButtonPlace };
@@ -104,21 +105,20 @@ namespace Inventory_manager
             newCountLabels = new Label[] { lblNewCountWareFixed, lblNewCountWareCurrent, lblNewCountCountFixed, lblNewCountCountUpdating };
 
             //Last Inventory
-            lastInventoryLabels = new Label[] { lblLastInventoryReasonFixed, lblLastInventoryReasonCurrent, lblLastInventoryLeaderFixed, lblLastInventoryLeaderCurrent, lblLastInventoryDateFixed, lblLastInventoryDateCurrent, lblLastInventoryAccountFixed, lblLastInventoryAccountCurrent };
-            lastInventoryLabelPlaces = new Point[] { variables.LastInventory_ReasonFixed, variables.LastInventory_ReasonCurrent, variables.LastInventory_LeaderFixed, variables.LastInventory_LeaderCurrent, variables.LastInventory_DateFixed, variables.LastInventory_DateCurrent, variables.LastInventory_AccountFixed, variables.LastInventory_AccountCurrent };
-            lastInvenoryButtons = new Button[] { btnLastInventoryBack };
-            lastInventoryButtonPlaces = new Point[] { variables.LastInventory_ButtonBack };
+            lastInventoryLabels = new Label[] { lblLastInventoryReasonFixed, lblLastInventoryReasonCurrent, lblLastInventoryLeaderFixed, lblLastInventoryLeaderCurrent, lblLastInventoryDateFixed, lblLastInventoryDateCurrent, lblLastInventoryAccountFixed, lblLastInventoryAccountCurrent, lblLastInventoryWares };
+            lastInventoryLabelPlaces = new Point[] { variables.LastInventory_ReasonFixed, variables.LastInventory_ReasonCurrent, variables.LastInventory_LeaderFixed, variables.LastInventory_LeaderCurrent, variables.LastInventory_DateFixed, variables.LastInventory_DateCurrent, variables.LastInventory_AccountFixed, variables.LastInventory_AccountCurrent, variables.LastInventory_CurrentWaresLabel };
+            lastInvenoryButtons = new Button[] { btnLastInventoryBack, btnLastInventoryPrevious, btnLastInventoryNext };
+            lastInventoryButtonPlaces = new Point[] { variables.LastInventory_ButtonBack, variables.LastInventory_ButtonPrevious, variables.LastInventory_ButtonNext };
 
             //Initial placement of buttons and size of window
             Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);
             Place_New_Buttons(mainWindowButtons, mainWindowButtonPoints);
 
-
             //Giving the comboboxes their datasource
             for (int i = 0; i < waresIncCombos.Length; i++)
             {
                 waresIncCombos[i].DisplayMember = "Name";
-                waresIncCombos[i].DataSource = data.Tables[0];         
+                waresIncCombos[i].DataSource = new DataView(data.Tables[0]);
             }
             Database_Connection_Close();
         }
@@ -153,6 +153,7 @@ namespace Inventory_manager
         }
         
         //In theory the start of a new inventory creates a string that can be saved via streamreader, or otherwise used for working, then starts the Actual count
+        //dd/MM/yyyy
         private void btnNewInvenOpen_Click(object sender, EventArgs e)
         {
             string newInvenReason = comboNewInvenReason.Text;
@@ -164,7 +165,7 @@ namespace Inventory_manager
             {
                 try
                 {   //Parsing the textbox to datetime
-                    newInvenDate = DateTime.ParseExact(txtNewInvenDate.Text, "d", null);
+                    newInvenDate = DateTime.ParseExact(txtNewInvenDate.Text, "dd.MM.yyyy", null);
                     
                     if (radioNewInvenYes.Checked && txtNewInvenAccount.Text != "Name") //Crafting the string
                     {   
@@ -172,13 +173,15 @@ namespace Inventory_manager
                     }
                     else
                     {
-                        variables.NewInven_DataInput = newInvenReason + ";" + newInvenLeader + ";" + newInvenDate.ToString();
+                        newInvenAccount = "n/A";
                     }
+
+                    variables.NewInven_DataInput = newInvenReason + ";" + newInvenLeader + ";" + newInvenAccount + ";" + newInvenDate.ToString();
+
                     //Saving string via streamwriter
                     using (StreamWriter sw = new StreamWriter("LastStockTaking.txt"))
                     {
                         sw.WriteLine(variables.NewInven_DataInput);
-
                     }
                     //Clearing textboxes
                     comboNewInvenReason.Text = "";
@@ -276,6 +279,7 @@ namespace Inventory_manager
             lblNewCountCountUpdating.Text = variables.NewCount_Counter.ToString();
         }
 
+        //Moves to the "Last inventory" tab
         private void btnLastInventoryBack_Click(object sender, EventArgs e)
         {
             Clear_Labels(lastInventoryLabels);
@@ -283,7 +287,32 @@ namespace Inventory_manager
             Place_New_Buttons(mainWindowButtons, mainWindowButtonPoints);
             this.Text = "Inventur";
             Resize_Mainframe(variables.MainWindow_Width, variables.MainWindow_Height);
+        }
 
+        //Moves through the old array and shows the data at the bottom of the screen (Back)
+        private void btnLastInventoryPrevious_Click(object sender, EventArgs e)
+        {
+            variables.OldInventory_ArrayWalker--;
+            lblLastInventoryWares.Text = variables.OldInventory_StringArray[variables.OldInventory_ArrayWalker];
+            btnLastInventoryNext.Enabled = true;
+            btnLastInventoryPrevious.Enabled = true;
+            if (variables.OldInventory_ArrayWalker== 4)
+            {
+                btnLastInventoryPrevious.Enabled = false;
+            }
+        }
+        //Moves through the old array and shows the data at the bottom of the screen (Forward)
+        private void btnLastInventoryNext_Click(object sender, EventArgs e)
+        {
+            variables.OldInventory_ArrayWalker++;
+            lblLastInventoryWares.Text = variables.OldInventory_StringArray[variables.OldInventory_ArrayWalker];
+            btnLastInventoryNext.Enabled = true;
+            btnLastInventoryPrevious.Enabled = true;
+            
+            if (variables.OldInventory_ArrayWalker == variables.OldInventory_StringArray.Length - 1)
+            {
+                btnLastInventoryNext.Enabled = false;
+            }
         }
 
         //Send count in the Counting tab
@@ -291,15 +320,19 @@ namespace Inventory_manager
         {
             try
             {
-                //reader stores in variables, oldname is a compare-string if the reader visited the last line
-                int countAmount;
+                //reader stores in variables, oldname is a compare-string when the reader reaches the last line, streamreader saves in textfile
                 string countName = myReader.GetString(0);
                 string oldname = myReader.GetString(0);
-                Int32.TryParse(myReader.GetString(1), out countAmount);
+                Int32.TryParse(myReader.GetString(1), out int countAmount);
                 
-                //compare databank result to count result
+                //compare databank result to count result, and storing result in the txt data
                 int countResult = countAmount - variables.NewCount_Counter;
-                
+
+                using (StreamWriter sw = new StreamWriter("LastStockTaking.txt"))
+                {
+                    variables.NewInven_DataInput = variables.NewInven_DataInput + ";" + oldname + " " + variables.NewCount_Counter.ToString();
+                    sw.WriteLine(variables.NewInven_DataInput);
+                }
                 //If there are more items than expected, and asks if the databank should be updated
                 if (countResult < 0)
                 {
@@ -325,6 +358,7 @@ namespace Inventory_manager
                 {
                     MessageBox.Show("Der gezählte Betrag stimmt mit der Datenbank überein", "Zählung korrekt", MessageBoxButtons.OK);
                 }
+
                 //Moves to the next line of the query
                 myReader.Read();
                 lblNewCountWareCurrent.Text = myReader.GetString(0);
@@ -370,45 +404,30 @@ namespace Inventory_manager
         //"Letzte Inventur" in the main menu
         private void btnInventoryLast_Click(object sender, EventArgs e)
         {
+            //Goes to the last inventory tab
             Clear_Buttons(mainWindowButtons);
             Resize_Mainframe(variables.LastInventory_WindowWidth, variables.LastInventory_WindowHeight);
             Place_New_Labels(lastInventoryLabels, lastInventoryLabelPlaces);
             Place_New_Buttons(lastInvenoryButtons, lastInventoryButtonPlaces);
+            try
+            { lblLastInventoryWares.Text = variables.OldInventory_StringArray[variables.OldInventory_ArrayWalker]; }
+            catch(Exception ex) { }
             this.Text = "Letzte Inventur";
-
-            if (File.Exists("LastStockTaking.txt"))
+            btnLastInventoryPrevious.Enabled = false;
+            
+            Read_LastStockpile();
+            if (variables.OldInventory_StringArray.Length >= 4)
             {
-                using (StreamReader sr = new StreamReader("LastStockTaking.txt"))
-                {
-                    string line;
-                    if((line = sr.ReadLine()) != null)
-                    {
-                        String[] streamreaderStringArray = line.Split(';');
-
-                        if(streamreaderStringArray.Length == 4)
-                        {   
-                            lblLastInventoryReasonCurrent.Text = streamreaderStringArray[0];
-                            lblLastInventoryLeaderCurrent.Text = streamreaderStringArray[1];
-                            lblLastInventoryDateCurrent.Text = streamreaderStringArray[3];
-                            lblLastInventoryAccountCurrent.Text = streamreaderStringArray[2];
-                        }
-                        else
-                        {
-                            lblLastInventoryReasonCurrent.Text = streamreaderStringArray[0];
-                            lblLastInventoryLeaderCurrent.Text = streamreaderStringArray[1];
-                            lblLastInventoryDateCurrent.Text = streamreaderStringArray[3];
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Datei leer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
+                lblLastInventoryReasonCurrent.Text = variables.OldInventory_StringArray[0];
+                lblLastInventoryLeaderCurrent.Text =variables.OldInventory_StringArray[1];
+                lblLastInventoryDateCurrent.Text = variables.OldInventory_StringArray[3];
+                lblLastInventoryAccountCurrent.Text = variables.OldInventory_StringArray[2];
             }
-            else
+            if(variables.OldInventory_StringArray.Length == 4)
             {
-                MessageBox.Show("LastStockTaking.txt fehlt.", "Fehlende Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnLastInventoryNext.Enabled = false;
             }
+
         }
         private void btnMainCloseProgram_Click(object sender, EventArgs e)
         {
@@ -579,6 +598,7 @@ namespace Inventory_manager
                 { MessageBox.Show(ex.Message); }
             Database_Connection_Close();
             myReader.Close();
+            Fill_DataTable();
         }
 
         //Add Wares Inventory buttons
@@ -600,10 +620,8 @@ namespace Inventory_manager
             string unit = txtAddWareUnit.Text;
             string name = txtAddWareName.Text;
             string count = txtAddWareCount.Text;
-            double price;
-            double countParsed;
-            bool priceParse = double.TryParse(txtAddWarePrice.Text, out price);
-            bool countParse = double.TryParse(txtAddWareCount.Text, out countParsed);
+            bool priceParse = double.TryParse(txtAddWarePrice.Text, out double price);
+            bool countParse = double.TryParse(txtAddWareCount.Text, out double countParsed);
 
             try//Checks if user input was valid
             {
@@ -636,6 +654,8 @@ namespace Inventory_manager
                         text.Text = "";
                     }
                     Database_Connection_Open();
+                    try{myReader.Close();}
+                    catch(Exception ex){ }
 
                     string query = "INSERT INTO wares(`Name`, `Price`, `Count`, `MeasureUnit`, `ID`) VALUES('" + name + "', '" + price + "', '" + count + "', '" + unit + "', NULL)";
                     commandDatabase = new MySqlCommand(query, databaseConnection);
@@ -817,7 +837,7 @@ namespace Inventory_manager
                 for (int i = 0; i < waresIncCombos.Length; i++)
                 {
                     waresIncCombos[i].DisplayMember = "Name";
-                    waresIncCombos[i].DataSource = data.Tables[0];
+                    waresIncCombos[i].DataSource = new DataView(data.Tables[0]);
                 }
             }
             catch (Exception ex)
@@ -829,7 +849,7 @@ namespace Inventory_manager
         //Replacing / Adding / Removing / Updating UI elements like buttons, labels, datagrids etc.
         
         
-        //closes myReader, opens up a new query, updates "name", and moves old reader to position of the Databasewalker
+        //closes myReader, opens up a new query, updates given name, and moves old reader to position of the Databasewalker
         private void NewCount_Databank_Updater(string name)
         {
             myReader.Close();
@@ -867,6 +887,30 @@ namespace Inventory_manager
             { databaseConnection.Close(); }
             catch (Exception e)
             { MessageBox.Show(e.Message); }
+        }
+        
+        //Checks for the textfile, and if one is there, puts it into an array
+        private void Read_LastStockpile()
+        {
+            if (File.Exists("LastStockTaking.txt"))
+            {
+                using (StreamReader sr = new StreamReader("LastStockTaking.txt")) //reads the file
+                {
+                    string line;
+                    if ((line = sr.ReadLine()) != null)  //Checks if the line is empty
+                    {
+                        variables.OldInventory_StringArray = line.Split(';'); //Splits the string
+                    }
+                    else
+                    {
+                        MessageBox.Show("Datei leer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("LastStockTaking.txt fehlt.", "Fehlende Datei", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

@@ -9,35 +9,61 @@ namespace Inventory_manager
 {
     public class Variables
     {
-        #region Window_Sizes
+        #region Window_Sizes_And_Basic_Variables
         //Connection string for MySQL Database "inventur"
-        private string connection_String = "datasource=127.0.0.1;port=3306;username=root;password=;database=inventur;";
+        private readonly string connection_String = "datasource=127.0.0.1;port=3306;username=root;password=;database=inventur;";
         public string Connection_String
         { get {return connection_String;} }
 
+        //The string array for the old stockpile
+        string[] oldStockpile = new string[] { };
+        public string[] OldInventory_StringArray
+        { 
+            get { return oldStockpile; }
+            set { oldStockpile = value; }
+        }
+
+        bool newInventory = false;
+
+        public bool OldInventory_OldBool
+        { 
+            get { return newInventory; }
+            set { newInventory = value; }
+        }
+
+
+        //The integer to walk the above stockpile array
+        private int arrayWalker = 4;
+        public int OldInventory_ArrayWalker
+        {
+            get { return arrayWalker; }
+            set { arrayWalker = value; }
+        }
+
+
         //MAIN WINDOW SIZE 295; 130
-        private int mainWindowWidth = 300; private int mainWindowHeight = 170;
+        private readonly int mainWindowWidth = 300; private int mainWindowHeight = 170;
         public int MainWindow_Width
         { get { return mainWindowWidth; } }
         public int MainWindow_Height
         { get { return mainWindowHeight; } }
 
         //Window size with datagrid 535;385
-        private int mainWindowDataGridWidth = 540; private int mainWindowDataGridHeight = 385;
+        private readonly int mainWindowDataGridWidth = 540; private readonly int mainWindowDataGridHeight = 385;
         public int Window_DataGrid_Width
         { get { return mainWindowDataGridWidth; } }
         public int Window_DataGrid_Height
         { get { return mainWindowDataGridHeight; } }
 
         //Window size in the "Current Inventory => Add Ware" Tab
-        private int addWareWindowSizeWidth = 205; private int addWareWindowSizeHeight = 275;
+        private readonly int addWareWindowSizeWidth = 205; private readonly int addWareWindowSizeHeight = 275;
         public int AddWares_WindowWidth
         { get { return addWareWindowSizeWidth; } }
         public int AddWares_WindowHeight
         { get { return addWareWindowSizeHeight; } }
 
         //Window size in the "Incoming Wares" Tab
-        private int waresIncWindowSizeWidth = 365; private int waresIncWindowSizeHeight = 220;
+        private readonly int waresIncWindowSizeWidth = 365; private readonly int waresIncWindowSizeHeight = 220;
 
         public int WaresInc_WindowWidth
         { get { return waresIncWindowSizeWidth; } }
@@ -47,8 +73,8 @@ namespace Inventory_manager
         //Window size in the "New inventory" Tab
         int newInvenWindowSizeWidth = 367; int newInvenWindowSizeHeight = 310;
 
-        //Window size in the "last inventory" Tab 277; 218
-        int lastInventoryWindowSizeWidth = 280; int lastInventoryWindowSizeHeight = 220;
+        //Window size in the "last inventory" Tab 257; 249
+        int lastInventoryWindowSizeWidth = 260; int lastInventoryWindowSizeHeight = 250;
         
         public int LastInventory_WindowWidth
         { get { return lastInventoryWindowSizeWidth; } }
@@ -338,8 +364,8 @@ namespace Inventory_manager
         { get { return databaseCounter; } set { databaseCounter = value; } }
         #endregion
 
-        //account fixed 12; 108 account current 87; 108
         #region LastInventory
+        //labels 53; 151          // << 15; 146         // >> 197; 146
         Point reasonFixed = new Point(12, 9);
         Point reasonCurrent = new Point(87, 9);
         Point leaderFixed = new Point(12, 42);
@@ -348,8 +374,12 @@ namespace Inventory_manager
         Point dateCurrent = new Point(87, 75);
         Point accountFixed = new Point(12, 108);
         Point accountCurrent = new Point(87, 108);
+        Point currentWares = new Point(53, 151);
 
-        Point lastInventoryButtonBack = new Point(15, 142);
+        //buttons
+        Point lastInventoryButtonBack = new Point(15, 175);
+        Point lastInventoryButtonPrevious = new Point(15, 146);
+        Point lastInventoryButtonNext = new Point(197, 146);
 
         public Point LastInventory_ReasonFixed
         { get { return reasonFixed; } }
@@ -367,8 +397,14 @@ namespace Inventory_manager
         { get { return accountFixed; } }
         public Point LastInventory_AccountCurrent
         { get { return accountCurrent; } }
+        public Point LastInventory_CurrentWaresLabel
+        { get { return currentWares; } }
         public Point LastInventory_ButtonBack
         { get { return lastInventoryButtonBack; } }
+        public Point LastInventory_ButtonPrevious
+        { get { return lastInventoryButtonPrevious; } }
+        public Point LastInventory_ButtonNext
+        { get { return lastInventoryButtonNext; } }
 
         #endregion
     }
